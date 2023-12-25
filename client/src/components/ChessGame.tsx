@@ -13,10 +13,10 @@ interface Props{
 }
 
 //PGN TEST "e4","e5","Nf3","Nc6","Bb5","a6","Ba4","Nf6","O-O","Be7","Re1","b5","Bb3","d6","c3","O-O","h3","Nb8","d4","Nbd7","c4","c6","cxb5","axb5","Nc3","Bb7","Bg5","b4","Nb1","h6","Bh4","c5","dxe5","Nxe4","Bxe7","Qxe7"
-
+//FEN TEST 8/4PPPP/1k6/8/2K3N1/8/5pp1/5N2
 function ChessGame({withPGNViewer,invert}:Props){
 const [winner,setWinner] = useState<string|null>("")
-const [pieces,setPieces] = useState(setStatePiecesFromFEN("8/4PPPP/1k6/8/2K3N1/8/5pp1/5N2"))
+const [pieces,setPieces] = useState(setStatePiecesFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
 const [playerToPlay,setPlayerToPlay] = useState<"w"|"b">("w")
 const [listMove,setListMove] = useState<string[]>([])
 const [countdownWhite,setCoundownWhite] = useState(60*lengthGame)
