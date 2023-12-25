@@ -1,14 +1,13 @@
 
 import './App.css'
-import Chessboard from './components/Chessboard/Chessboard'
+import ChessGame from './components/ChessGame'
 
 function App() {
 
-  return (
-    <>
-      <Chessboard FEN ="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" />
-    </>
-  )
+  return <div className='App'>
+    <ChessGame withPGNViewer={false} invert={false}/>
+    <ChessGame withPGNViewer={false} invert={true}/>
+    </div>
 }
 
 export default App
