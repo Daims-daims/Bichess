@@ -21,7 +21,6 @@ function availableMoveKing(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[
             for(let i = pieceMove.x+1 ; i <7;i++){
                 if(tileIsOccupied({x:i,y:y},pieceMove.color,piecesBoard)!=="free" ) return false
             }
-            console.log("icclskni")
             const rook =  piecesBoard.find(p=>(p.pieceType==="R" || p.pieceType==="r") 
                                                 && p.color===pieceMove.color 
                                                 && !p.hasAlreadyMoved
@@ -60,7 +59,6 @@ function listAvailableMoveKing(pieceMove:IPiece,piecesBoard:IPiece[]):coordinate
     }
 
     listCoordToTest = listCoordToTest.filter(p=>p.x<8 && p.x>=0 && p.y <8 && p.y>=0)
-    console.log(listCoordToTest)
     return listCoordToTest.filter(pos => availableMove(pieceMove,pos,piecesBoard,false))
 }
 

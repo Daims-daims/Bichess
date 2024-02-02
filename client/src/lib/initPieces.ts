@@ -22,5 +22,5 @@ function setStatePiecesFromFEN(FEN:string) : IPiece[]{
     }
     return res
 }
-
+ 
 export {setStatePiecesFromFEN}

@@ -120,9 +120,11 @@ function isKingAttacked(color:"w"|"b",piecesBoard:IPiece[]):boolean{
 }
 
 function playerStillHasMove(color:"w"|"b",piecesBoard:IPiece[]):boolean{
-    const piecesOpponnent = piecesBoard.filter(p=>p.color!==color)
-    for(let i = 0 ; i < piecesOpponnent.length ; i ++) {
-        if(listAvailableMove(piecesOpponnent[i],piecesBoard).length>0) return true
+    const piecesPlayer = piecesBoard.filter(p=>p.color===color)
+    for(let i = 0 ; i < piecesPlayer.length ; i ++) {
+        if(listAvailableMove(piecesPlayer[i],piecesBoard).length>0){ 
+            console.log(piecesPlayer[i],listAvailableMove(piecesPlayer[i],piecesBoard))
+            return true}
     }
     return false
 }
@@ -170,20 +172,21 @@ function specialMove(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[]):str
     return null
 }
 
-function moveToString(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[],isCapture : boolean):string{
-    let res = ''
+function moveToString(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[]):string{
+    let res = pieceMove.color
     if(pieceMove.pieceType.toLowerCase()!=="p") res += pieceMove.pieceType.toUpperCase()
-    const otherPiece = piecesBoard.find(p=>p.pieceType === pieceMove.pieceType && availableMove(p,{x:pieceMove.x,y:pieceMove.y},piecesBoard,true))
+    let otherPiece
+    if(pieceMove.pieceType.toLowerCase()!=="p") otherPiece= piecesBoard.find(p=>p!=pieceMove && p.pieceType === pieceMove.pieceType && availableMove(p,{x:x,y:y},piecesBoard,true))
     if(otherPiece){
         if(otherPiece.y===y) res+= dictCoordToLetter[x]
         else res+= y+1
     }
-    if(isCapture){
-        if(pieceMove.pieceType.toLowerCase()==="p") res+=dictCoordToLetter[x]
+    if(piecesBoard.find(p=>p.x===x && p.y === y)){
+        if(pieceMove.pieceType.toLowerCase()==="p") res+=dictCoordToLetter[pieceMove.x]
         res+="x"
     }
-    res+=dictCoordToLetter[pieceMove.x]
-    res+=Math.abs(pieceMove.y-8)
+    res+=dictCoordToLetter[x]
+    res+=y+1
     if(isKingAttacked(pieceMove.color==="w" ? "b" : "w" ,piecesBoard)) res+="+"
     console.log(res)
     return res

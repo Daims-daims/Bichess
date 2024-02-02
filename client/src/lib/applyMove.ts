@@ -6,6 +6,7 @@ import { IPiece } from "./Type"
 
 
 function applyMove(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiece[]{
+    console.log("applyMove "+ move)
     if(move[0]==="O") return applyCastle(move,playerToPlay,pieces)
     if(move[0].toUpperCase()===move[0]) return applyMovePiece(move,playerToPlay,pieces)
     else return applyMovePawn(move,playerToPlay,pieces)
@@ -18,7 +19,7 @@ function applyCastle(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiece[
     let rook:IPiece | undefined
     if(move.length>3){ // Long castle
         rook = pieces.find(p=>(playerToPlay==="w" ? p.pieceType==="R" : p.pieceType==="r") && p.x===0)
-        if(! rook) throw new Error("Rook not found");
+        if(! rook) throw new Error("Rook not found to long castle");
         return pieces.map(p=>{
             if (p==rook){
                 p.x=3
@@ -33,8 +34,7 @@ function applyCastle(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiece[
     }
     else{
         rook = pieces.find(p=>(playerToPlay==="w" ? p.pieceType==="R" : p.pieceType==="r") && p.x===7)
-        console.log(rook)
-        if(! rook) throw new Error("Rook not found");
+        if(! rook) throw new Error("Rook not found to short castle");
         return pieces.map(p=>{
             if (p==rook){
                 p.x=5
@@ -56,6 +56,7 @@ function applyMovePiece(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPie
     let indexToRead = 0
     const pieceType = playerToPlay === "w" ? move[indexToRead] : move[indexToRead].toLowerCase()
     indexToRead++
+    console.log("move : "+move)
     if(move[1]==="x"){
         indexToRead++
     }
@@ -73,7 +74,7 @@ function applyMovePiece(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPie
         rowArrive = parseInt(move[indexToRead])-1
     }
     const piece = pieces.find(p=>p.pieceType===pieceType && (!colDepart || p.x===colDepart) && (!rowDepart || p.y === rowDepart) && availableMove(p,{x:colArrive,y:rowArrive},pieces,false))
-    if( ! piece) throw new Error("Piece not find move : "+move+ " pieces : "+ pieces);
+    if( ! piece) throw new Error("Piece not found move : "+move);
     return pieces.filter(p=>p.x !== colArrive || p.y!==rowArrive).map(p=>{
         if(p!=piece) return p
         p.x=colArrive
@@ -96,21 +97,18 @@ function applyMovePawn(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiec
         rowArrive = parseInt(move[3])-1
     }
     else{
-        console.log("ci")
         colArrive = dictLetterToCoord[move[0]]
         rowArrive = parseInt(move[1])-1
-        console.log(colArrive,move[0])
     }
     if(move.includes("=")) withPromotion=true
     const piece = pieces.find(p=>p.pieceType===pieceType && colDepart===p.x && availableMove(p,{x:colArrive,y:rowArrive},pieces,false))
-    if( ! piece) throw new Error("Piece not find move : "+move+ "col : "+colArrive+" row : "+rowArrive);
+    if( ! piece) throw new Error("Piece not found move : "+move);
     return pieces.filter(p=>p.x !== colArrive || p.y!==rowArrive).map(p=>{
         if(p!=piece) return p
         p.x=colArrive
         p.y = rowArrive
         p.hasAlreadyMoved=true
         if(withPromotion){
-            console.log(move,move.slice(-1))
             p.pieceType = p.color === "w" ? move.slice(-1) : move.slice(-1).toLowerCase()
             p.pathToImg = "../../public/img/chessPiece/"+move.slice(-1).toLowerCase()+"_"+p.color+".png"
         }
