@@ -8,6 +8,7 @@ import { IPiece } from "../lib/Type"
 import { applyMove } from "../lib/applyMove"
 import { playerStillHasMove } from "../lib/Piece"
 import { ResultGame } from "./ResultGame"
+import { useClocksGame } from "../hooks/useClocksGame"
 
 interface Props{
     withPGNViewer : boolean
@@ -25,10 +26,7 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
     const [playerToPlay,setPlayerToPlay] = useState<"w"|"b">("w")
     const [listMove,setListMove] = useState<string[]>([])
     
-    const [countdownWhite,setCoundownWhite] = useState(60*lengthGame)
-    const [countdownBlack,setCoundownBlack] = useState(60*lengthGame)
-
-    const [timer,setTimer] = useState<NodeJS.Timeout>()
+    const [countdownWhite,countdownBlack, switchTimer] = useClocksGame(60*lengthGame)
 
     const [l_move_test,setL_move_test] = useState(["e4","e5","Nf3","Nc6","Bb5","a6","Ba4","Nf6","O-O","Be7","Re1","b5","Bb3","d6","c3","O-O","h3","Nb8","d4","Nbd7","c4","c6","cxb5","axb5","Nc3","Bb7","Bg5","b4","Nb1","h6","Bh4","c5","dxe5","Nxe4","Bxe7","Qxe7"])
 
@@ -38,17 +36,6 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
     
 
     const onNewMove = useCallback((newMove:string,sendData:boolean)=>{
-        const switchCountDown = (color:"w"|'b')=>{
-            clearInterval(timer)
-            const newTimer = color==="w" ? 
-                        setInterval(()=>{
-                            setCoundownWhite(ctr=>ctr-1)
-                        },1000) :
-                        setInterval(()=>{
-                            setCoundownBlack(ctr=> ctr- 1)
-                        },1000)
-            setTimer(newTimer)
-        }
         if(newMove[0]!="w" && newMove[0]!="b" ) throw new Error("Move wrongly formatted : "+ newMove);
 
         const newColor = newMove[0]==="w" ? "b" : "w"
@@ -56,13 +43,12 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
         console.log(listMove)
         console.log(playerToPlay,newColor)
         setPieces(cur=>applyMove(newMove.slice(1),newMove[0] as "w"|"b",cur))
-        switchCountDown(newColor)
+        switchTimer(newColor)
         setListMove(cur=>cur.concat(newMove))
         setPlayerToPlay(newColor)
         if(sendData && connection.current) connection.current.send(newMove)
-    },[listMove, playerToPlay, timer])
+    },[listMove, playerToPlay, switchTimer])
 
-    console.log(timer)
 
     useEffect(() => {
         if(!connection.current){
@@ -89,9 +75,6 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
         onNewMove(l_move_test[0],false)
         setL_move_test(l_move_test.slice(1))
     }
-
-
-    if(countdownBlack*countdownWhite===0) clearInterval(timer)
 
     useEffect(()=>{
         if(! playerStillHasMove(playerToPlay,pieces)){
