@@ -13,14 +13,15 @@ import { useClocksGame } from "../hooks/useClocksGame"
 interface Props{
     withPGNViewer : boolean
     invert:boolean,
-    pseudo:string,
-    idGame:string
+    roomId:string,
+    pseudo:string
     colorPlayer : "w" | "b"
+    indexBoard : 1 | 2 
 }
 
 //PGN TEST "e4","e5","Nf3","Nc6","Bb5","a6","Ba4","Nf6","O-O","Be7","Re1","b5","Bb3","d6","c3","O-O","h3","Nb8","d4","Nbd7","c4","c6","cxb5","axb5","Nc3","Bb7","Bg5","b4","Nb1","h6","Bh4","c5","dxe5","Nxe4","Bxe7","Qxe7"
 //FEN TEST 8/4PPPP/1k6/8/2K3N1/8/5pp1/5N2
-function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
+function ChessGame({withPGNViewer,pseudo,invert,roomId,colorPlayer,indexBoard}:Props){
     const [winner,setWinner] = useState<string|null>("")
     const [pieces,setPieces] = useState(setStatePiecesFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
     const [playerToPlay,setPlayerToPlay] = useState<"w"|"b">("w")
@@ -52,7 +53,7 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
 
     useEffect(() => {
         if(!connection.current){
-            const socket = new WebSocket("ws://localhost:8082/"+idGame+"/"+pseudo)
+            const socket = new WebSocket("ws://localhost:8082/"+roomId+"/"+pseudo+"/"+indexBoard)
 
             // Connection opened
             socket.addEventListener("open", () => {
@@ -61,14 +62,19 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
 
             // Listen for messages
             socket.addEventListener("message", (event):void => {
-                console.log("Message from server ", event.data)
-                onNewMove(event.data,false)
+                const arr = JSON.parse(event.data).data;
+                let newData = '';
+                arr.forEach((element:number) => {
+                  newData+=String.fromCharCode(element);
+                });
+                console.log(newData)
+                onNewMove(newData,false)
             })
 
             connection.current = socket
         }
         // return () => {if(connection.current) connection.current.close()}
-    }, [idGame, pseudo, onNewMove])
+    }, [roomId, onNewMove, indexBoard])
     
     const applyMoveList = ()=>{
         setPieces(applyMove(l_move_test[0],playerToPlay,pieces))
@@ -126,7 +132,7 @@ function ChessGame({withPGNViewer,invert,pseudo,idGame,colorPlayer}:Props){
                         </div>
                         <div >
                             {winner && <ResultGame result={winner} />}
-                            <Chessboard key={idGame} invert={invert} playerToPlay={playerToPlay} onPieceMove={onNewMove} onGameOver={onGameOver} updatePieces={updatePieces} disableChessBoard={playerToPlay!==colorPlayer} pieces={pieces} />
+                            <Chessboard key={roomId+(invert ? 2 : 1)} invert={invert} playerToPlay={playerToPlay} onPieceMove={onNewMove} onGameOver={onGameOver} updatePieces={updatePieces} disableChessBoard={playerToPlay!==colorPlayer} pieces={pieces} />
                             <div className="columnFile">
                                 {listLetter}
                             </div>

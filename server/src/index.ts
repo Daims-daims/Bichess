@@ -11,7 +11,6 @@ import { gameRoomWebSocketHandler } from "./Services/webSocketList";
 const x=5
 const wssList = new gameRoomWebSocketHandler(8082)
 
-const l_ws = new Map<string,[string,WebSocket][]>()
 
 /// Représente l'ensemble des web socket sur le port 8082,
 /// La clé représente le nom du chat et est unique -> par la suite utiliser l'id
@@ -30,18 +29,18 @@ app.get('/', (_:Request, res:Response) => {
     res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
-app.post("/room",(_:Request, res:Response) => {
-  console.log("test")
-  res.status(200).json({
-    pseudo:"azerty",
-    color:"w",
-    idGames : [l_ws.size+1000,l_ws.size+1001]     
-  })
-})
 
-app.get("/room",(_:Request, res:Response) => {
-})
+app.post("/room",(_:Request,res:Response)=>{
+  const {pseudo,color,roomId} = wssList.requestRoom()
+  res.status(200).json({
+  pseudo:pseudo,
+  color:color,
+  idGames : roomId     
+  })}
+)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+export {wssList,app}

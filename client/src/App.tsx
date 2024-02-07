@@ -6,20 +6,20 @@ import { JoinRoom } from './components/JoinRoom'
 
 function App() {
 
-  const [player,setPlayer] = useState<string>()
   const [colorFirstBoard,setColorFirstBoard] = useState<"w"|"b">()
-  const [idGames,setIDGames] = useState<string[]>()
+  const [roomId,setRoomId] = useState<string>()
+  const [player,setPlayer] = useState<string>()
 
-  const onChoicePlayer = (pseudo:string,color:string,idGamesWs:string[])=>{
-    setPlayer(pseudo)
+  const onChoicePlayer = (player : string, color:string,roomId:string)=>{
     if(color==="w" || color==="b") setColorFirstBoard(color)
-    setIDGames(idGamesWs)
+    setRoomId(roomId)
+    setPlayer(player)
   }
 
   return <div className='App'>
-    { ! player && <JoinRoom onChoicePlayer={onChoicePlayer}/>}
-   { player && colorFirstBoard && idGames && idGames.length===2 &&  <ChessGame key={"chessboard-1"} withPGNViewer={false} invert={colorFirstBoard==="b"} pseudo={player} idGame={idGames[0]} colorPlayer={colorFirstBoard}/>}
-   { player && colorFirstBoard&& idGames && idGames.length===2 && <ChessGame key={"chessboard-2"} withPGNViewer={false} invert={colorFirstBoard==="w"} pseudo={player} idGame={idGames[1]} colorPlayer={colorFirstBoard==="w" ? "b" : "w"}/>}
+    { ! roomId && <JoinRoom onChoicePlayer={onChoicePlayer}/>}
+   {player &&  colorFirstBoard && roomId &&  <ChessGame key={"chessboard-1"} pseudo={player} withPGNViewer={false} invert={colorFirstBoard==="b"} roomId={roomId} colorPlayer={colorFirstBoard} indexBoard={1}/>}
+   {player &&  colorFirstBoard&& roomId  && <ChessGame key={"chessboard-2"} pseudo={player} withPGNViewer={false} invert={colorFirstBoard==="w"} roomId={roomId} colorPlayer={colorFirstBoard==="w" ? "b" : "w"} indexBoard={2}/>}
     </div>
 }
 
