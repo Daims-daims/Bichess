@@ -30,10 +30,11 @@ app.get('/', (_:Request, res:Response) => {
 });
 
 
-app.post("/room",(_:Request,res:Response)=>{
-  const {pseudo,color,roomId} = wssList.requestRoom()
+app.get("/room/:pseudo",(req:Request,res:Response)=>{
+  const {pseudo} = req.params
+  console.log(pseudo)
+  const {color,roomId} = wssList.requestRoom(pseudo)
   res.status(200).json({
-  pseudo:pseudo,
   color:color,
   idGames : roomId     
   })}

@@ -38,16 +38,19 @@ function ChessGame({withPGNViewer,pseudo,invert,roomId,colorPlayer,indexBoard}:P
 
     const onNewMove = useCallback((newMove:string,sendData:boolean)=>{
         if(newMove[0]!="w" && newMove[0]!="b" ) throw new Error("Move wrongly formatted : "+ newMove);
-
-        const newColor = newMove[0]==="w" ? "b" : "w"
         console.log(newMove)
         console.log(listMove)
-        console.log(playerToPlay,newColor)
-        setPieces(cur=>applyMove(newMove.slice(1),newMove[0] as "w"|"b",cur))
-        switchTimer(newColor)
-        setListMove(cur=>cur.concat(newMove))
-        setPlayerToPlay(newColor)
-        if(sendData && connection.current) connection.current.send(newMove)
+        console.log(playerToPlay)
+        if(sendData && connection.current){
+            connection.current.send(newMove)
+        }
+        else{
+            const newColor = newMove[0]==="w" ? "b" : "w"
+            setPieces(cur=>applyMove(newMove.slice(1),newMove[0] as "w"|"b",cur))
+            switchTimer(newColor)
+            setListMove(cur=>cur.concat(newMove))
+            setPlayerToPlay(newColor)
+        }
     },[listMove, playerToPlay, switchTimer])
 
 
@@ -67,14 +70,17 @@ function ChessGame({withPGNViewer,pseudo,invert,roomId,colorPlayer,indexBoard}:P
                 arr.forEach((element:number) => {
                   newData+=String.fromCharCode(element);
                 });
-                console.log(newData)
+                if(newData === "start"){
+                    console.log("satrt")
+                    switchTimer("w")
+                }
                 onNewMove(newData,false)
             })
 
             connection.current = socket
         }
         // return () => {if(connection.current) connection.current.close()}
-    }, [roomId, onNewMove, indexBoard])
+    }, [roomId, onNewMove, indexBoard, pseudo, switchTimer])
     
     const applyMoveList = ()=>{
         setPieces(applyMove(l_move_test[0],playerToPlay,pieces))

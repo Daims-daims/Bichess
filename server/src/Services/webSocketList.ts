@@ -20,11 +20,11 @@ class gameRoomWebSocketHandler {
             if(!currentRoom){
                 throw new Error("Room : "+currentRoom+" introuvable");
             }
-            currentRoom.addWs(wsConnection,chessBoardIndex)
+            currentRoom.addWs(wsConnection,chessBoardIndex,pseudo)
 
             wsConnection.on("message",(data:string)=>{
                 if(! currentRoom) throw new Error("Chat introuvable "+ room);
-                currentRoom.sendMessage(data,chessBoardIndex,pseudo)
+                currentRoom.sendMessage(data,chessBoardIndex)
             })
         })
     }
@@ -35,10 +35,13 @@ class gameRoomWebSocketHandler {
         return newRoom
     }
 
-    requestRoom(){
+    requestRoom(pseudo:String){
+        console.log("recherche de salle")
         for(var i = 0 ; i < this.listRooms.length ; i++){
+            console.log(this.listRooms[i].getRoomId())
+            console.log(this.listRooms[i].isFree())
             if(this.listRooms[i].isFree()){
-                //this.listRooms[i].addPlayer()
+                this.listRooms[i].addPlayer(pseudo)
                 return {
                     "pseudo" : this.listRooms[i].getPseudo(1),
                     "color" : "b",
@@ -48,6 +51,7 @@ class gameRoomWebSocketHandler {
         }
         const newRoom = this.createRoom()
         this.listRooms.push(newRoom)
+        this.listRooms[i].addPlayer(pseudo)
         return {
             "pseudo" : "test",
             "color":"w",
