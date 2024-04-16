@@ -1,0 +1,49 @@
+@use "../../styles/constante.scss";
+
+.textInputDiv{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    padding: 10px 0px;
+}
+
+.textInputField{
+    font-family: constante.$font-stack;
+    font-size: 16;
+    font-weight:800;
+    color: constante.$primary-color;
+    padding: 5px;
+    width: 100%;
+}
+
+.textInputField::placeholder{
+    color: constante.$primary-shade;
+}
+
+.textInputFieldContainer{
+    display: flex;
+    flex-direction: row;
+    background-color: constante.$primary-background;
+    gap:5px;
+    border-radius: 2px;
+    justify-content: space-between;
+}
+
+.showPasswordBtn{
+    border-color: constante.$primary-shade;
+    padding: 0 5px;
+    border-left :1px solid constante.$primary-shade;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+//    style={{padding:"0 5px",cursor:"pointer",borderLeft:"1px solid "}}
+}
+
+.showPasswordBtn:hover{
+    background-color: rgba($color: constante.$primary-shade, $alpha: 0.2);
+}
+
+.textInputLabel{
+    color: white;
+    font-weight : 800;
+}
