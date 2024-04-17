@@ -9,11 +9,12 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "yarn run build && (cd ../server && yarn start:dev)"
+    "start": "yarn run build"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

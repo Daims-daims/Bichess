@@ -1,7 +1,9 @@
 import { WebSocket, WebSocketServer } from "ws";
 import { chessRoom } from "./chessRoom";
 import { throws } from "assert";
+import { pseudoRandomBytes } from "crypto";
 
+const ID_MAX = 256
 
 class gameRoomWebSocketHandler {
     wss :WebSocketServer
@@ -15,23 +17,41 @@ class gameRoomWebSocketHandler {
             const chessBoardIndex = req.url.split("/")[3]
 
             console.log(room,chessBoardIndex)
-            console.log(this.listRooms.map(l=>l.roomId))
+            this.showAllRooms()
+
+            // Recherche de la salle avec l'id correspondant dans la liste des salles
             const currentRoom = this.listRooms.find(l=>l.roomId===room)
+
+
+            // Si la salle n'est pas trouvé erreur puisque que la room est initialisé au moment de la requête
             if(!currentRoom){
                 throw new Error("Room : "+currentRoom+" introuvable");
             }
+
             currentRoom.addWs(wsConnection,chessBoardIndex,pseudo)
 
             wsConnection.on("message",(data:string)=>{
                 if(! currentRoom) throw new Error("Chat introuvable "+ room);
                 currentRoom.sendMessage(data,chessBoardIndex)
             })
+
+            wsConnection.on("close",(data:string)=>{
+                console.log("suppression "+pseudo)
+                currentRoom.disconnect(pseudo)
+                if(currentRoom.isEmpty()){
+                    this.deleteRoom(room)
+                }
+            }
+            )
         })
     }
 
     createRoom(){
-        const nbRoom = this.listRooms.length;
-        const newRoom = new chessRoom("room"+nbRoom)
+        let idRoom = "room"+(Math.floor(Math.random()*ID_MAX))
+        while(this.listRooms.find(l=>l.roomId===idRoom)){
+            idRoom= "room"+(Math.random()*ID_MAX)
+        }
+        const newRoom = new chessRoom(idRoom)
         return newRoom
     }
 
@@ -57,6 +77,16 @@ class gameRoomWebSocketHandler {
             "color":"w",
             "roomId" : newRoom.getRoomId()
         }
+    }
+
+    showAllRooms(){
+        console.log(this.listRooms.map(l=>l.roomId))
+    }
+
+    deleteRoom(roomId:string){
+        const indexRoom = this.listRooms.map(e => e.getRoomId()).indexOf(roomId);
+        if(indexRoom >-1) this.listRooms.splice(indexRoom,1)
+        this.showAllRooms()
     }
 }
 

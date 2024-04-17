@@ -55,6 +55,15 @@ class chessRoom {
         console.log(this.player2)
         return this.player2 === null
     }
+
+    isEmpty(){
+        return this.player1 === null && this.player2 === null
+    }
+
+    disconnect(pseudo:string){
+        if(this.player1===pseudo) this.player1=null
+        if(this.player2===pseudo) this.player2=null
+    }
 }
 
 export {chessRoom};
