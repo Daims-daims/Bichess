@@ -1,0 +1,18 @@
+@use "../../styles/constante.scss";
+
+.btnClassic{
+    background-color: constante.$primary-color;
+    padding: 10px;
+    color:constante.$primary-background;
+    font-weight: 800;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btnClassic:hover{
+    background-color: constante.$primary-bold;
+}
+.btnClassic:active{
+    background-color: constante.$primary-color;
+}

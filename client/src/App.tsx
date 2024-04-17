@@ -1,8 +1,10 @@
 
 import { useState } from 'react'
-import './App.css'
+import './App.scss'
+import './styles/constante.scss'
 import ChessGame from './components/ChessGame'
 import { JoinRoom } from './components/JoinRoom'
+import LogInScreen from './components/LogInComponent/LogInScreen'
 
 function App() {
 
@@ -17,6 +19,7 @@ function App() {
   }
 
   return <div className='App'>
+    { ! player && <LogInScreen/>}
     { ! roomId && <JoinRoom onChoicePlayer={onChoicePlayer}/>}
    {player &&  colorFirstBoard && roomId &&  <ChessGame key={"chessboard-1"} pseudo={player} withPGNViewer={false} invert={colorFirstBoard==="b"} roomId={roomId} colorPlayer={colorFirstBoard} indexBoard={1}/>}
    {player &&  colorFirstBoard&& roomId  && <ChessGame key={"chessboard-2"} pseudo={player} withPGNViewer={false} invert={colorFirstBoard==="w"} roomId={roomId} colorPlayer={colorFirstBoard==="w" ? "b" : "w"} indexBoard={2}/>}

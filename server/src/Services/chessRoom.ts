@@ -21,10 +21,14 @@ class chessRoom {
             this.wsRoom2.push(ws)
         }
         if(this.wsRoom1.length===2 && this.wsRoom2.length === 2 ){
-            console.log("start Game")
-            this.sendMessage("start","1")
-            this.sendMessage("start","2")
+            this.startRoom()
         }
+    }
+
+    startRoom(){
+        console.log("start Game")
+        this.sendMessage("start","1")
+        this.sendMessage("start","2")
     }
 
     getPseudo(indexPlayer : 1 | 2 ){

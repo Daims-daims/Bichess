@@ -7,6 +7,11 @@ dotenv.config();
 
 import { WebSocket } from "ws";
 import { gameRoomWebSocketHandler } from "./Services/webSocketList";
+import User from "./models/user.model";
+import chessRoom from "./models/chessRoom.model";
+import chessBoard from "./models/chessBoard.model";
+import "./models/association.model"
+import databaseConnection from "./db/databaseConnexion";
 
 const x=5
 const wssList = new gameRoomWebSocketHandler(8082)
@@ -21,6 +26,7 @@ const app = express();
 const port = 3030;
 
 app.use(cors({ origin: "http://localhost:5173" }))
+
 
 
 app.use(express.static(path.join(__dirname, '../../client/dist')))

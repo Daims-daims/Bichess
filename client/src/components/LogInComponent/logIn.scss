@@ -1,0 +1,31 @@
+@use "../../styles/constante.scss";
+
+.backgroundLogIn{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255,85,51, 0.2);
+    display: grid;
+    place-items: center;
+    .active{
+        color:constante.$primary-extra-bold;
+        border-bottom: 2px solid;
+    }
+}
+
+.logInWindow{
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 20px;
+    gap:10px;
+    background-color: constante.$primary-shade;
+}
+
+.btnLogIn{
+    padding: 5px;
+    color: constante.$primary-background;
+    font-weight:800;
+    font-size: 20px;
+    cursor: pointer;
+}
