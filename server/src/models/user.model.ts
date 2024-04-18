@@ -7,7 +7,11 @@ const User = databaseConnection.define("Users", {
     mail: {
         type: DataTypes.TEXT,
         },
-    elo: DataTypes.INTEGER
+    elo:{ 
+        type:DataTypes.INTEGER,
+        defaultValue:1200
+    },
+    password:DataTypes.TEXT
 });
 
 

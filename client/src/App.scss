@@ -5,6 +5,13 @@ body{
   place-items: center;
   background-color: #363636;
   font-family: constante.$font-stack;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+html{
+  height: 100vh;
+  width:100vw;
 }
 
 #root{
@@ -16,6 +23,8 @@ body{
   display: flex;
   gap: 20px;
   justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 p{

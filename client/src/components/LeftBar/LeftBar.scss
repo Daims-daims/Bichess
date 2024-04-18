@@ -1,0 +1,44 @@
+@use "../../styles/constante.scss";
+
+
+.LeftBar{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 55px;
+    height: 100vh;
+    background-color: constante.$lighter-background;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 10px;
+    box-sizing: border-box;
+    transition: width 0.2s;
+}
+
+.LeftBarMenu{
+    width: fit-content;
+    height: 35px;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    place-items: center;
+    gap: 10px;
+    transition: background-color 0.1s;
+    transition: width 0.2s;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.LeftBar.LeftBarExpanded{
+    width:200px;
+}
+
+.LeftBarMenu:hover{
+    background-color: constante.$primary-color;
+}
+
+.LeftBarMenu.MenuActive{
+    background-color: constante.$primary-shade;
+}

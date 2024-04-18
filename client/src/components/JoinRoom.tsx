@@ -1,3 +1,4 @@
+import { backBaseUrl } from "../Constante"
 
 interface Player{
     color:"w" | "b",
