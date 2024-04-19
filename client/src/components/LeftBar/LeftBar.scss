@@ -18,17 +18,29 @@
 
 .LeftBarMenu{
     width: fit-content;
+    max-width: 35px;
     height: 35px;
+    overflow: hidden;
     padding: 5px;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
-    place-items: center;
+    align-items: center;
+    justify-content: baseline;
     gap: 10px;
     transition: background-color 0.1s;
-    transition: width 0.2s;
+    transition: max-width 0.1s ;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+.iconMenu {
+    width: 25px;
+    height: 25px;
+}
+
+.LeftBarExpanded .LeftBarMenu {
+    max-width:250px;
 }
 
 .LeftBar.LeftBarExpanded{
@@ -41,4 +53,8 @@
 
 .LeftBarMenu.MenuActive{
     background-color: constante.$primary-shade;
+}
+
+p:link{
+    text-decoration: none;
 }

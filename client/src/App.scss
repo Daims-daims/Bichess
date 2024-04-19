@@ -1,13 +1,18 @@
 @use "./styles/constante.scss";
 
 body{
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content:center ;
+  align-items: start;
   background-color: #363636;
   font-family: constante.$font-stack;
   height: 100%;
   width: 100%;
   margin: 0px;
+}
+
+p{
+  all:unset;
 }
 html{
   height: 100vh;
@@ -17,14 +22,17 @@ html{
 #root{
   display: grid;
   place-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .App{
   display: flex;
-  gap: 20px;
+  padding-left: 55px;
   justify-content: center;
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 p{

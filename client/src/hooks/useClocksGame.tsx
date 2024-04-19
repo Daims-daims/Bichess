@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 
-function useClocksGame(startTime:number){
+function useClocksGame(startTime:number,isDisabled:boolean){
     const [countdownWhite,setCoundownWhite] = useState(startTime)
     const [countdownBlack,setCoundownBlack] = useState(startTime)
 
@@ -26,13 +26,15 @@ function useClocksGame(startTime:number){
 
     const switchTimer = (color:"w"|"b")=>{
         clearInterval(intervalIDRef.current)
+        if(!isDisabled){
         if(color=="w"){
             setIntervalWhite()
         }
         else{
             setIntervalBlack()
-        }
+        }}
     }
+
     
     useEffect(()=>{
         if(countdownBlack * countdownWhite == 0 ){

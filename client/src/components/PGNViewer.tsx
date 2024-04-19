@@ -1,4 +1,4 @@
-import "./Chessboard/chessboard.css"
+import "./Chessboard/chessboard.scss"
 
 interface Props{
     listMove : string[]

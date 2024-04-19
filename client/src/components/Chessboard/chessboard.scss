@@ -1,3 +1,5 @@
+@use "../../styles/constante.scss";
+
 .chessboard{
     display: grid;
     grid-template-columns: repeat(8,minmax(0px,100px));
@@ -59,10 +61,10 @@
 
 .clock{
     padding: 10px;
-    background-color: #464646;
-    color: #FFF;
-    font-weight: 700;
-    font-size: large;
+    background-color: constante.$primary-background;
+    color: constante.$primary-color;
+    font-weight:800;
+    font-size: 20px;
     width: fit-content;
     border-radius:5px
 }
@@ -83,6 +85,11 @@
     padding-bottom: 10px;
     width: 80vh;
     color:azure;
+}
+
+.letterFile{
+    font-weight: 700;
+    font:20px;
 }
 
 .btn{

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import "./chessboard.css"
+import "./chessboard.scss"
 import Tile from "./Tile"
 import { availableMove, listAvailableMove, moveToString, playerStillHasMove, specialMove } from "../../lib/Piece"
 import { IPiece, coordinate } from "../../lib/Type"

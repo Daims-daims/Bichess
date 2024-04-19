@@ -1,8 +1,9 @@
 import { useState } from "react"
 import "./LeftBar.scss"
 import LeftBarMenu from "./LeftBarMenu"
-import { FaChessQueen,FaUserFriends,FaHistory,FaUser } from "react-icons/fa";
+import { FaChessQueen,FaUserFriends,FaHistory,FaUser,FaHome } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
+import { useLocation } from "react-router-dom";
 
 interface Props{
     logOut:()=>void
@@ -10,7 +11,9 @@ interface Props{
 
 const LeftBar = ({logOut}:Props)=>{
 
+    const location = useLocation();
     const [expanded,setExpanded] = useState(false)
+    const selectedRoom = location.pathname.split("/")[1]
     
     const onClickAction = (menuCLicked : string)=>{
         console.log(menuCLicked)
@@ -18,14 +21,15 @@ const LeftBar = ({logOut}:Props)=>{
 
     return <div onMouseEnter={()=>setExpanded(true)} onMouseLeave={()=>setExpanded(false)} className={expanded ? "LeftBar LeftBarExpanded" : "LeftBar" }>
         <div style={{display:"flex",flexDirection:"column",gap:"45px"}}>
-            <LeftBarMenu Icon={FaUser} onClic={()=>onClickAction("Profil")} text="Mon Profil" isActive={false} expanded={expanded} />
+            <LeftBarMenu Icon={FaUser} link={"/profile"} onClic={()=>onClickAction("Profil")} text="Mon Profil" isActive={selectedRoom ==="profile"}  />
             <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
-                <LeftBarMenu Icon={FaChessQueen} onClic={()=>onClickAction("Profil")} text="Jouer" isActive={true} expanded={expanded} />
-                <LeftBarMenu Icon={FaUserFriends} onClic={()=>onClickAction("Profil")} text="Amis" isActive={false} expanded={expanded} />
-                <LeftBarMenu Icon={FaHistory} onClic={()=>onClickAction("Profil")} text="Historique" isActive={false} expanded={expanded} />
+                <LeftBarMenu Icon={FaHome} link={"/"} onClic={()=>onClickAction("Profil")} text="Accueil" isActive={selectedRoom ===""}  />
+                <LeftBarMenu Icon={FaChessQueen} link={"/game"} onClic={()=>onClickAction("Profil")} text="Jouer" isActive={selectedRoom ==="game"}  />
+                <LeftBarMenu Icon={FaUserFriends} link={"/friends"} onClic={()=>onClickAction("Profil")} text="Amis" isActive={selectedRoom ==="friends"}  />
+                <LeftBarMenu Icon={FaHistory} link={"/history"} onClic={()=>onClickAction("Profil")} text="Historique" isActive={selectedRoom ==="history"}  />
             </div>
         </div>
-        <LeftBarMenu Icon={LuLogOut} onClic={logOut} text="Déconnexion" isActive={false} expanded={expanded} />
+        <LeftBarMenu Icon={LuLogOut} link={"/"} onClic={logOut} text="Déconnexion" isActive={false}  />
     </div>
 }
 
