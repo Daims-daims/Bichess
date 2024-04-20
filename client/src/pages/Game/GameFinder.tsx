@@ -6,11 +6,35 @@ import '../../styles/constante.scss'
 import './Game.scss'
 import FormTextInput from '../../components/FormInput/FormTextInput'
 import TextField from '../../components/FormInput/TextField'
+import LoadingScreenGame from './LoadingScreenGame'
 
-function GameFinder() {
+interface Props{
+  pseudo:string
+}
+
+interface Player{
+  color:"w" | "b",
+  idGames : string    
+}
+
+function GameFinder({pseudo}:Props) {
 
   const [roomIdJoin,setRoomIdJoin] = useState("")
+  const [isLoading,setIsLoading] = useState(false)
+console.log(isLoading)
 
+  const resetLoading= () => {
+    setIsLoading(false)
+  }
+
+  const joinNewGame = async () => {
+    setIsLoading(true)
+    const cred =  await fetch("http://localhost:3030/room/"+pseudo,{
+      method:"GET"
+  })
+  const res:Player = await cred.json()
+  console.log(res)
+  }
 
 
   return <div style={{width:"100%",display:"flex",flexDirection:"row",padding:"100px 200px",alignItems:'start', gap:"50px",justifyContent:"space-around"}}>
@@ -18,14 +42,14 @@ function GameFinder() {
             <p className='menuBoxHeader'>Rejoindre une partie</p>
             <div className='menuBoxButtonSection'>
               <p className='menuBoxSectionTitle'>Démarrer une partie en ligne</p>
-              <ClassicButton text='Lancer une partie' clickAction={()=>console.log("Lancer une partie")}></ClassicButton>
+              <ClassicButton text='Lancer une partie' clickAction={joinNewGame}></ClassicButton>
             </div>
             <div className='menuBoxButtonSection'>
               <p className='menuBoxSectionTitle'>Rejoindre une partie avec un code</p>
               <div style={{display:"flex"}}>
                 {// placer TextArea}\}
                   }
-                <ClassicButton text='Rejoindre' clickAction={()=>console.log("Rejoindre")}></ClassicButton>
+                <ClassicButton text='Rejoindre' clickAction={()=>setIsLoading(true)}></ClassicButton>
               </div>
             </div>
            </div>
@@ -39,6 +63,7 @@ function GameFinder() {
               <p className='menuBoxSectionTitle'>Inviter un ami à une partie</p>
             </div>
            </div>
+           {isLoading && <LoadingScreenGame resetLoading={resetLoading}/>}
         </div>
 }
 

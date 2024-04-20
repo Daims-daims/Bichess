@@ -11,8 +11,7 @@ interface Props{
 
 function Home({player}:Props) {
 
-  return <div className='App'>
-    <p>{player}</p>
+  return <div style={{display:"flex",gap:"50px"}}>
    <ChessGame onlineGame={false} key={"chessboard-1"} pseudo={player} withPGNViewer={false} invert={false}  colorPlayer={"w"} indexBoard={1}/>
    <ChessGame onlineGame={false} key={"chessboard-2"} pseudo={player} withPGNViewer={false} invert={true} colorPlayer={"b"} indexBoard={2}/>
     </div>

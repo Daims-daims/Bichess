@@ -47,10 +47,17 @@ class gameRoomWebSocketHandler {
     }
 
     createRoom(){
-        let idRoom = "room"+(Math.floor(Math.random()*ID_MAX))
-        while(this.listRooms.find(l=>l.roomId===idRoom)){
-            idRoom= "room"+(Math.random()*ID_MAX)
+        let roomCode = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < 8) {
+            roomCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
         }
+        console.log(roomCode);
+        
+        let idRoom = "room"+roomCode
         const newRoom = new chessRoom(idRoom)
         return newRoom
     }

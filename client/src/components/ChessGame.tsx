@@ -125,7 +125,7 @@ function ChessGame({withPGNViewer,pseudo,invert,roomId,colorPlayer,indexBoard,on
     return (
         <div style={{display:"flex",gap:"10px"}}>
             {withPGNViewer && <PGNViewer listMove={listMove}></PGNViewer>}
-            <div style={{display:"grid",flexDirection:"column",gap:"0px",justifyContent:"space-between",placeItems:(indexBoard == 1 ? "end" : "start")}}>
+            <div style={{display:"grid",flexDirection:"column",gap:"0px",justifyItems:(indexBoard == 1 ? "end" : "start")}}>
                 <Clock countdown={invert ? countdownWhite : countdownBlack}/>
                 <div>
                     <div style={{display:"flex",flexDirection:(indexBoard==1 ? "row" : "row-reverse"),marginTop:"10px"}}>

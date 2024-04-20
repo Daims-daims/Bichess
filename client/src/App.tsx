@@ -33,17 +33,17 @@ function App() {
   // }
 
   return <BrowserRouter>
-      <LeftBar logOut={()=>{setPlayer(undefined);setCookies("access_token",undefined)}}/>
       { ! player && <LogInScreen/>}
       { player && <div className='App'><Routes>
           <Route path="/" element={<Home  player={player}/>}/>
-          <Route path="/game" element={<Game/>}/>
+          <Route path="/game" element={<Game pseudo={player}/>}/>
           <Route path="/friends" element={<Friends />}/>
           <Route path="/history" element={<History />}/>
           <Route path="/profile" element={<Profile />}/>
           <Route path="*" element={<Home player={player}/>}/>
         </Routes>
         </div>}
+      <LeftBar logOut={()=>{setPlayer(undefined);setCookies("access_token",undefined)}}/>
       </BrowserRouter>
 }
 
