@@ -18,7 +18,7 @@ export default function Tile({color,piece,selected,attacked,grabTentative,coord}
     else className  = color+"-tile "+ className 
     return <div  className={className}>
         {false && <span style={{position:"absolute",color:"black"}}>{"x:" +coord.x + "-y:"+coord.y}</span>}
-        {piece && <div  color={piece.color} onMouseDown={(e)=>grabTentative(e)}className="chess-piece" style={{backgroundImage:`url(${piece?.pathToImg}`}}></div>}
+        {piece && <div  color={piece.color} onMouseDown={(e)=>grabTentative(e)}className="chess-piece" style={{backgroundImage:`url(${window.location.origin}/${piece?.pathToImg}`}}></div>}
     </div>
 
 }

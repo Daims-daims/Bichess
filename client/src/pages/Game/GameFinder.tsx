@@ -7,6 +7,7 @@ import './Game.scss'
 import FormTextInput from '../../components/FormInput/FormTextInput'
 import TextField from '../../components/FormInput/TextField'
 import LoadingScreenGame from './LoadingScreenGame'
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
 
 interface Props{
   pseudo:string
@@ -21,7 +22,7 @@ function GameFinder({pseudo}:Props) {
 
   const [roomIdJoin,setRoomIdJoin] = useState("")
   const [isLoading,setIsLoading] = useState(false)
-console.log(isLoading)
+  const navigate = useNavigate()
 
   const resetLoading= () => {
     setIsLoading(false)
@@ -34,6 +35,7 @@ console.log(isLoading)
   })
   const res:Player = await cred.json()
   console.log(res)
+  navigate("/game/"+res.idGames.replace("room",""))
   }
 
 

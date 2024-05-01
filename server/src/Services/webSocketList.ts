@@ -14,25 +14,25 @@ class gameRoomWebSocketHandler {
         this.wss.on("connection",(wsConnection:WebSocket,req:Request)=>{
             const room = req.url.split("/")[1]
             const pseudo = req.url.split("/")[2]
-            const chessBoardIndex = req.url.split("/")[3]
 
-            console.log(room,chessBoardIndex)
+            console.log(room)
             this.showAllRooms()
 
             // Recherche de la salle avec l'id correspondant dans la liste des salles
+            
             const currentRoom = this.listRooms.find(l=>l.roomId===room)
-
-
+            console.log(room)
+            console.log(this.listRooms.map(l=>l.roomId))
             // Si la salle n'est pas trouvé erreur puisque que la room est initialisé au moment de la requête
             if(!currentRoom){
                 throw new Error("Room : "+currentRoom+" introuvable");
             }
-
-            currentRoom.addWs(wsConnection,chessBoardIndex,pseudo)
+            console.log("plaer",pseudo)
+            currentRoom.addWs(wsConnection,pseudo)
 
             wsConnection.on("message",(data:string)=>{
                 if(! currentRoom) throw new Error("Chat introuvable "+ room);
-                currentRoom.sendMessage(data,chessBoardIndex)
+                currentRoom.receptionMessage(data)
             })
 
             wsConnection.on("close",(data:string)=>{
@@ -57,22 +57,21 @@ class gameRoomWebSocketHandler {
         }
         console.log(roomCode);
         
-        let idRoom = "room"+roomCode
+        let idRoom = roomCode
         const newRoom = new chessRoom(idRoom)
         return newRoom
     }
 
-    requestRoom(pseudo:String){
+    requestRoom(pseudo:string){
         console.log("recherche de salle")
         for(var i = 0 ; i < this.listRooms.length ; i++){
-            console.log(this.listRooms[i].getRoomId())
-            console.log(this.listRooms[i].isFree())
             if(this.listRooms[i].isFree()){
                 this.listRooms[i].addPlayer(pseudo)
                 return {
                     "pseudo" : this.listRooms[i].getPseudo(1),
                     "color" : "b",
-                    "roomId" : this.listRooms[i].getRoomId()
+                    "roomId" : this.listRooms[i].getRoomId(),
+                    "boardStates":this.listRooms[i].getBoardsStates().join('XXX')
                 }
             }
         }
@@ -80,9 +79,10 @@ class gameRoomWebSocketHandler {
         this.listRooms.push(newRoom)
         this.listRooms[i].addPlayer(pseudo)
         return {
-            "pseudo" : "test",
+            "pseudo" : pseudo,
             "color":"w",
-            "roomId" : newRoom.getRoomId()
+            "roomId" : newRoom.getRoomId(),
+            "boardStates":this.listRooms[i].getBoardsStates().join('XXX')
         }
     }
 

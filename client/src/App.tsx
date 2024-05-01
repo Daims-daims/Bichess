@@ -12,6 +12,7 @@ import Game from './pages/Game/GameFinder'
 import Friends from './pages/Friends'
 import History from './pages/History'
 import Profile from './pages/Profile'
+import GameRoom from './pages/Game/GameRoom'
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
       { player && <div className='App'><Routes>
           <Route path="/" element={<Home  player={player}/>}/>
           <Route path="/game" element={<Game pseudo={player}/>}/>
+          <Route path="/game/*" element={<GameRoom pseudo={player}/>}/>
           <Route path="/friends" element={<Friends />}/>
           <Route path="/history" element={<History />}/>
           <Route path="/profile" element={<Profile />}/>
