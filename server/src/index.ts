@@ -61,46 +61,6 @@ app.get("/room/:pseudo",(req:Request,res:Response)=>{
   })}
 )
 
-app.post("/login",(req:Request,res)=>{
-  const {pseudo,password} = req.body 
-  User.findAll({
-    where:{
-      pseudo:pseudo
-    }
-  }).then(userQuery=>{if(userQuery.length===0){
-    res.status(401).send("pseudo")
-  }else if(userQuery[0].dataValues.password !== password ){
-    res.status(401).send("password")
-  }else{
-    res.status(200).send("ok")
-  }
-})
-})
-
-app.post("/signup",(req:Request,res)=>{
-  console.log("pzdkfnzopifn")
-  console.log(req.body)
-  const {pseudo,password} = req.body 
-  User.findAll({
-    where:{
-      pseudo:pseudo
-    }
-  }).then(existingUsers =>{
-    if(existingUsers.length>0){
-      res.status(409)
-      res.send("userAlreadyExists")
-    }
-    else{
-      User.create({
-        pseudo:pseudo,
-        password:password
-      })
-      res.status(200)
-      res.send(pseudo)
-    }
-  })
-  
-})
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

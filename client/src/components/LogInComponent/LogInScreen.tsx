@@ -11,7 +11,7 @@ function LogInScreen(){
     const [password,setPassword] = useState("")
     const [isLogIn,setLogIn] = useState(true)
     const [signUpState,setSignedUpState] = useState("")
-    const [logInState,setlogInState] = useState("")
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_,setCookies] = useCookies(["access_token"])
 
     const onChangePseudo = (e: React.FormEvent<HTMLInputElement>)=>{
