@@ -192,4 +192,4 @@ function moveToString(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[]):st
     return res
 }
 
-export {moveToString, availableMove, getListPointToTest,tileIsOccupied,listAvailableMove,tileIsAttacked,playerStillHasMove,specialMove }
+export {moveToString,isKingAttacked, availableMove, getListPointToTest,tileIsOccupied,listAvailableMove,tileIsAttacked,playerStillHasMove,specialMove }

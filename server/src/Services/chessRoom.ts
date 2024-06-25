@@ -1,5 +1,8 @@
 import { error, log } from "console"
 import { WebSocket } from "ws"
+import { createRoom } from "../controllers/chessRoomController"
+import { Model } from "sequelize-typescript"
+import { updatePGNBoard, updateResultBoard } from "../controllers/chessBoardController"
 
 
 interface messageReceivedWs{
@@ -8,7 +11,8 @@ interface messageReceivedWs{
     move : string,
     remainingTime:number, 
     FENState : string,
-    color : "w" | "b"
+    color : "w" | "b",
+    result:'white'|'draw'|'black'    
 }
 
 interface player{
@@ -17,11 +21,20 @@ interface player{
     wsClient : WebSocket|null
 }
 
+interface IchessRoomInfo{
+    roomId:string,
+    whitePiecesId:number,
+    blackPiecesId:number,
+    firstBoardId:number,
+    secondBoardId:number
+}
+
 class chessRoom {
 
-    roomId:String
+    roomId:string
     player1: player = {pseudo:null,connected:false,wsClient:null}
     player2: player = {pseudo:null,connected:false,wsClient:null}
+    chessRoomInfo: IchessRoomInfo|null = null
 
     // protected boardStates:string[]=['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
     // 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']
@@ -30,7 +43,7 @@ class chessRoom {
     protected PGNGames:string[]=["",""]
 
 
-    constructor(roomId:String) {
+    constructor(roomId:string) {
         this.roomId = roomId
     }
 
@@ -55,16 +68,24 @@ class chessRoom {
 
     startRoom(){
         console.log("start Game")
-        const msg = {
-                        event : "start",
-                        FENBoard1 : this.boardStates[0],
-                        FENBoard2 : this.boardStates[1],
-                        color:""
-                    }
-        msg.color="w"
-        this.sendMessage(JSON.stringify(msg),this.player1.pseudo)
-        msg.color="b"
-        this.sendMessage(JSON.stringify(msg),this.player2.pseudo)
+        if(this.player1.pseudo && this.player2.pseudo){
+            createRoom(this.roomId,this.player1.pseudo,this.player2.pseudo).then((l:IchessRoomInfo)=>this.chessRoomInfo=l)
+
+            // Send game starting message to players
+            const msg = {
+                            event : "start",
+                            FENBoard1 : this.boardStates[0],
+                            FENBoard2 : this.boardStates[1],
+                            color:"",
+                            opponent:""
+                        }
+            msg.color="w"
+            msg.opponent = this.player2.pseudo
+            this.sendMessage(JSON.stringify(msg),this.player1.pseudo)
+            msg.color="b"
+            msg.opponent = this.player1.pseudo
+            this.sendMessage(JSON.stringify(msg),this.player2.pseudo)
+        }
     }
 
     getPseudo(indexPlayer : 1 | 2 ){
@@ -96,6 +117,9 @@ class chessRoom {
             this.boardStates[dataJson.boardIndex] = dataJson.FENState
             this.addMoveToPGN(dataJson.move,dataJson.boardIndex)
         }
+        else if(dataJson.event ==="result"){
+            this.gameOver(dataJson.boardIndex,dataJson.result)
+        }
     }
 
     addMoveToPGN(move:string,indexBoard:0|1){
@@ -108,7 +132,9 @@ class chessRoom {
         }
         moveFormatted += move.substring(1)
         this.PGNGames[indexBoard] =this.PGNGames[indexBoard] +" " +moveFormatted
-
+        if(this.chessRoomInfo){
+            updatePGNBoard(indexBoard==0 ? this.chessRoomInfo.firstBoardId : this.chessRoomInfo.secondBoardId,this.PGNGames[indexBoard])
+        }
         console.log("Room "+this.roomId+" PGN board "+indexBoard+" :")
         console.log(this.PGNGames[indexBoard] );
         console.log()
@@ -126,6 +152,21 @@ class chessRoom {
         }
         if(this.player2.pseudo===pseudoClient){// rajouter else pour unificication joueur
             this.player2.wsClient?.send(data)
+        }
+    }
+
+    gameOver(boardIndex:0|1,result:'white'|'draw'|'black'){
+        if(this.chessRoomInfo){
+            if(boardIndex===0){
+                updateResultBoard(this.chessRoomInfo.firstBoardId,result)
+            }
+            else{
+                updateResultBoard(this.chessRoomInfo.secondBoardId,result)
+            }
+        }
+        else{
+            console.error("room : " + this.roomId+" chessRoomInfo not found");
+            
         }
     }
 

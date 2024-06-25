@@ -19,28 +19,15 @@ interface Props{
     indexBoard : 1 | 2 ,
     onlineGame : boolean,
     pieces:IPiece[],
-    onNewMove : (move:string)=>void
+    onNewMove : (move:string)=>void,
+    result:"white"|"draw"|"black"|""
 }
 
 //PGN TEST "e4","e5","Nf3","Nc6","Bb5","a6","Ba4","Nf6","O-O","Be7","Re1","b5","Bb3","d6","c3","O-O","h3","Nb8","d4","Nbd7","c4","c6","cxb5","axb5","Nc3","Bb7","Bg5","b4","Nb1","h6","Bh4","c5","dxe5","Nxe4","Bxe7","Qxe7"
 //FEN TEST 8/4PPPP/1k6/8/2K3N1/8/5pp1/5N2
-function ChessGameTest({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onlineGame,playerToPlay,onNewMove}:Props){
-    const [winner,setWinner] = useState<string|null>("")
-    // const [listMove,setListMove] = useState<string[]>([])
+function ChessGameOnline({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onlineGame,playerToPlay,onNewMove,result}:Props){
     
     const [countdownWhite,countdownBlack, switchTimer] = useClocksGame(60*lengthGame,!onlineGame)
-
-    //const [l_move_test,setL_move_test] = useState(["e4","e5","Nf3","Nc6","Bb5","a6","Ba4","Nf6","O-O","Be7","Re1","b5","Bb3","d6","c3","O-O","h3","Nb8","d4","Nbd7","c4","c6","cxb5","axb5","Nc3","Bb7","Bg5","b4","Nb1","h6","Bh4","c5","dxe5","Nxe4","Bxe7","Qxe7"])
-
-    
-    
-
-
-    // useEffect(()=>{
-    //     if(! playerStillHasMove(playerToPlay,pieces)){
-    //         setWinner(playerToPlay === "w" ? "black" : "white" )
-    //     }
-    // },[pieces,playerToPlay])
 
 
 
@@ -60,16 +47,16 @@ function ChessGameTest({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onlin
 
 
     return (
-        <div style={{display:"flex",gap:"10px"}}>
-            <div style={{display:"grid",flexDirection:"column",gap:"0px",justifyItems:(indexBoard == 1 ? "end" : "start")}}>
+        <div style={{display:"flex",gap:"10px",width:"100%",height:"fit-content"}}>
+            <div style={{display:"grid",width:"100%",flexDirection:"column",gap:"0px",justifyItems:((indexBoard==1 && !invert) || (indexBoard==2 && !invert) ? "end" : "start")}}>
                 <Clock countdown={invert ? countdownWhite : countdownBlack}/>
-                <div>
-                    <div style={{display:"flex",flexDirection:(indexBoard==1 ? "row" : "row-reverse"),marginTop:"10px"}}>
+                    <div style={{display:"flex",width:'100%',flexDirection:((indexBoard==1 && !invert) || (indexBoard==2 && !invert) ? "row" : "row-reverse"),
+                            justifyContent:"flex-end",marginTop:"10px"}}>
                         <div className="rowFile">
                             {listNumber}
                         </div>
-                        <div >
-                            {winner && <ResultGame result={winner} />}
+                        <div style={{maxWidth:'70vmin',width:"100%"}}>
+                            {result!=="" && <ResultGame result={result} />}
                             <Chessboard key={roomId ? roomId+(invert ? 2 : 1) : invert ? 2 : 1} 
                                         invert={invert} 
                                         playerToPlay={playerToPlay} 
@@ -83,12 +70,10 @@ function ChessGameTest({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onlin
                             </div>
                         </div>
                     </div>
-
-                </div>
                 <Clock countdown={invert ? countdownBlack : countdownWhite}/>
             </div>
         </div>
     )
 }
 
-export default ChessGameTest
+export default ChessGameOnline

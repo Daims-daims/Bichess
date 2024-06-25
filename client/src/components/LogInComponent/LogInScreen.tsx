@@ -2,7 +2,7 @@ import { useState } from 'react'
 import FormTextInput from '../FormInput/FormTextInput'
 import './logIn.scss'
 import ClassicButton from '../Button/ClassicButton'
-import { backBaseUrl } from '../../Constante'
+import { backEndUrl } from '../../Constante'
 import { useCookies } from 'react-cookie'
 
 function LogInScreen(){
@@ -30,7 +30,7 @@ function LogInScreen(){
             pseudo : pseudo,
             password : password
         }
-        fetch(backBaseUrl+"/signup",{
+        fetch(backEndUrl+"/signup",{
             method:"POST",
             headers:{
                 "content-type":"application/json"
@@ -45,7 +45,7 @@ function LogInScreen(){
             pseudo : pseudo,
             password : password
         }
-        fetch(backBaseUrl+"/login",{
+        fetch(backEndUrl+"/login",{
             method:"POST",
             headers:{
                 "content-type":"application/json"

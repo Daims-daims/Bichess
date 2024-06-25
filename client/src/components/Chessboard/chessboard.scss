@@ -2,9 +2,12 @@
 
 .chessboard{
     display: grid;
-    grid-template-columns: repeat(8,minmax(0px,100px));
-    grid-template-rows: repeat(8,minmax(0px,100px));
-    height: 80vh;
+    grid-template-columns: repeat(8,1fr);
+    grid-template-rows: repeat(8,1fr);
+    // height: 100%;
+    // width: 45vmin;
+    // max-width: 90vmin;
+    max-width: 80vmin;
     aspect-ratio: 1;
 }
 
@@ -72,19 +75,18 @@
 
 .rowFile{
     display: grid;
-    grid-template-rows: repeat(8,minmax(0px,100px));
-    height: 80vh;
+    grid-template-rows: repeat(8,1fr);
     padding-left: 10px;
     padding-right: 10px;
     color:azure;
+    padding-bottom: 38px;
 }
 
 .columnFile{
     display: grid;
-    grid-template-columns: repeat(8,minmax(0px,100px));
+    grid-template-columns: repeat(8,1fr);
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 80vh;
     color:azure;
 }
 

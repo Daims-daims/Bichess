@@ -22,12 +22,13 @@ const dictLetterToCoord:{[n:string]:number} = {
 
 const lengthGame = 5
 
-const backBaseUrl = "http://localhost:3030"
+const backEndUrl = "http://localhost:3030"
 
 const color={
     primary_color:"#FF8551",
     primary_bold:"#ff6e30",
+    primary_extra_bold:"#E64500",
     primary_background:"#FFE3D7",
 }
 
-export {dictCoordToLetter,dictLetterToCoord,lengthGame,backBaseUrl,color}
+export {dictCoordToLetter,dictLetterToCoord,lengthGame,backEndUrl,color}

@@ -2,8 +2,8 @@ import { DataTypes } from "sequelize";
 import databaseConnection  from "../db/databaseConnexion";
 
 
-const User = databaseConnection.define("Users", {
-    pseudo: DataTypes.TEXT,
+const User = databaseConnection.define("user", {
+    pseudo: {type:DataTypes.TEXT},
     mail: {
         type: DataTypes.TEXT,
         },

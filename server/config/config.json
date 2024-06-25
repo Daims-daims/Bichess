@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "jmnbbdfy",
+    "password": "KD83rmDbqjorJGB3E-ud6KauuUYqfZAt",
+    "database": "jmnbbdfy",
+    "host": "flora.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "pgsql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

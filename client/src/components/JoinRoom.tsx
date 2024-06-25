@@ -1,4 +1,4 @@
-import { backBaseUrl } from "../Constante"
+import { backEndUrl } from "../Constante"
 
 interface Player{
     color:"w" | "b",

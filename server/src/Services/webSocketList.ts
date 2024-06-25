@@ -64,6 +64,7 @@ class gameRoomWebSocketHandler {
 
     requestRoom(pseudo:string){
         console.log("recherche de salle")
+        // searching free room through current rooms
         for(var i = 0 ; i < this.listRooms.length ; i++){
             if(this.listRooms[i].isFree()){
                 this.listRooms[i].addPlayer(pseudo)
@@ -75,14 +76,15 @@ class gameRoomWebSocketHandler {
                 }
             }
         }
+        // create a new room
         const newRoom = this.createRoom()
         this.listRooms.push(newRoom)
-        this.listRooms[i].addPlayer(pseudo)
+        newRoom.addPlayer(pseudo)
         return {
             "pseudo" : pseudo,
             "color":"w",
             "roomId" : newRoom.getRoomId(),
-            "boardStates":this.listRooms[i].getBoardsStates().join('XXX')
+            "boardStates":newRoom.getBoardsStates().join('XXX') // we can then split result on frontend
         }
     }
 

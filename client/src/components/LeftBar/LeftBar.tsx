@@ -4,6 +4,7 @@ import LeftBarMenu from "./LeftBarMenu"
 import { FaChessQueen,FaUserFriends,FaHistory,FaUser,FaHome } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
+import TestMenu from "./testMenu";
 
 interface Props{
     logOut:()=>void
@@ -27,6 +28,7 @@ const LeftBar = ({logOut}:Props)=>{
                 <LeftBarMenu Icon={FaChessQueen} link={"/game"} onClic={()=>onClickAction("Profil")} text="Jouer" isActive={selectedRoom ==="game"}  />
                 <LeftBarMenu Icon={FaUserFriends} link={"/friends"} onClic={()=>onClickAction("Profil")} text="Amis" isActive={selectedRoom ==="friends"}  />
                 <LeftBarMenu Icon={FaHistory} link={"/history"} onClic={()=>onClickAction("Profil")} text="Historique" isActive={selectedRoom ==="history"}  />
+                <TestMenu/>
             </div>
         </div>
         <LeftBarMenu Icon={LuLogOut} link={"/"} onClic={logOut} text="Déconnexion" isActive={false}  />

@@ -5,27 +5,19 @@ const cors = require("cors");
 
 dotenv.config();
 
-// import { WebSocket } from "ws";
-import User from "./models/user.model";
-import chessRoom from "./models/chessRoom.model";
-import chessBoard from "./models/chessBoard.model";
-import databaseConnection from "./db/databaseConnexion";
-
-
-import "./models/association.model"
-import { gameRoomWebSocketHandler } from "./Services/webSocketList";
-import { json } from "sequelize";
 import syncAll from "./models/syncAll";
-import { emit } from "process";
+import "./models/association.model"
 
+import { gameRoomWebSocketHandler } from "./Services/webSocketList";
+
+import userConnection from './routes/userConnection'
+import gameRoute from "./routes/gameRoute";
 
 const bodyParser = require('body-parser')
- 
 
 const wssList = new gameRoomWebSocketHandler(8082)
 
 // sync change to model 
-syncAll()
 
 
 /// Représente l'ensemble des web socket sur le port 8082,
@@ -42,25 +34,12 @@ app.use(cors({ origin: "http://localhost:5173" }))
 
 
 app.use(express.static(path.join(__dirname, '../../client/dist')))
-// parse application/json
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', (_:Request, res:Response) => {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
-});
 
-
-app.get("/room/:pseudo",(req:Request,res:Response)=>{
-  const {pseudo} = req.params
-  console.log(pseudo)
-  const {color,roomId} = wssList.requestRoom(pseudo)
-  res.status(200).json({
-  color:color,
-  idGames : roomId     
-  })}
-)
-
+app.use(userConnection)
+app.use(gameRoute)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
