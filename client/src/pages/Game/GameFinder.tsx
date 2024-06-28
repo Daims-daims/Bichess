@@ -1,13 +1,11 @@
 
-import { FormEvent, useState } from 'react'
+import {useState } from 'react'
 import '../../App.scss'
 import ClassicButton from '../../components/Button/ClassicButton'
 import '../../styles/constante.scss'
 import './Game.scss'
-import FormTextInput from '../../components/FormInput/FormTextInput'
-import TextField from '../../components/FormInput/TextField'
 import LoadingScreenGame from './LoadingScreenGame'
-import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface Props{
   pseudo:string
@@ -20,7 +18,6 @@ interface Player{
 
 function GameFinder({pseudo}:Props) {
 
-  const [roomIdJoin,setRoomIdJoin] = useState("")
   const [isLoading,setIsLoading] = useState(false)
   const navigate = useNavigate()
 

@@ -1,12 +1,7 @@
-import {  useCallback, useEffect, useRef, useState } from "react"
-import PGNViewer from "./PGNViewer"
 import Chessboard from "./Chessboard/Chessboard"
 import Clock from "./Clock"
 import { dictCoordToLetter, lengthGame } from "../Constante"
-import { setStatePiecesFromFEN } from "../lib/initPieces"
 import { IPiece } from "../lib/Type"
-import { applyMove } from "../lib/applyMove"
-import { playerStillHasMove } from "../lib/Piece"
 import { ResultGame } from "./ResultGame"
 import { useClocksGame } from "../hooks/useClocksGame"
 

@@ -47,3 +47,7 @@
     color: white;
     font-weight : 800;
 }
+
+.placeHolderPrimary::placeholder{
+    color: rgba(constante.$primary-color,0.7);
+}

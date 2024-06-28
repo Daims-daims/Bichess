@@ -1,5 +1,4 @@
 
-import logo from "../../../public/gif/loading.gif"
 import LoadingGame from "../../components/Loading/loadingGame"
 
 interface Props{

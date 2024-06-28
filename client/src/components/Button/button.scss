@@ -10,6 +10,16 @@
     cursor: pointer;
 }
 
+.btnDisabled{
+    background-color: rgba(constante.$primary-color,0.4);
+    padding: 10px;
+    color:constante.$primary-background;
+    font-weight: 800;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .btnClassic:hover{
     background-color: constante.$primary-bold;
 }

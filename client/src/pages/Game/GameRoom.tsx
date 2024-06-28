@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import LoadingScreenGame from "./LoadingScreenGame"
 import { useNavigate } from "react-router-dom"
 import useChessBoard from "../../hooks/useChessBoard"
-import ChessGameTest from "../../components/ChessGameOnline"
 import ChessGameOnline from "../../components/ChessGameOnline"
 import getScorePlayer from "../../lib/calculateScore"
 import { color } from "../../Constante"
@@ -11,15 +10,15 @@ interface Props{
     pseudo:string
 }
 
-interface gameMessage{
-    event : string,
-    boardIndex : 0|1,
-    move? : string,
-    FEN? : string,
-    FENBoard1? : string,
-    FENBoard2? : string,
-    remainingTime? : string
-}
+// interface gameMessage{
+//     event : string,
+//     boardIndex : 0|1,
+//     move? : string,
+//     FEN? : string,
+//     FENBoard1? : string,
+//     FENBoard2? : string,
+//     remainingTime? : string
+// }
 
 const GameRoom = ({pseudo}:Props)=>{
     const navigate = useNavigate()
@@ -70,7 +69,7 @@ const GameRoom = ({pseudo}:Props)=>{
             connection.current = socket
         }
         // return () => {if(connection.current) connection.current.close()}
-    }, [pseudo])
+    }, [applyNewMoveBoard_1, applyNewMoveBoard_2, idRoom, initBoard_1, initBoard_2, pseudo])
 
     
     useEffect(() => {
@@ -93,7 +92,7 @@ const GameRoom = ({pseudo}:Props)=>{
             }
             connection.current.send(JSON.stringify(data))
         }
-    }, [resultBoard_2])
+    }, [resultBoard_1, resultBoard_2])
 
 
 
