@@ -3,6 +3,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 const cors = require("cors");
 
+var cookies = require("cookie-parser");
+
 dotenv.config();
 
 import syncAll from "./models/syncAll";
@@ -29,8 +31,10 @@ const app = express();
 const port = 3030;
 
 
-app.use(cors({ origin: "http://localhost:5173" }))
+app.use(cors({ origin: "http://localhost:5173",
+  credentials: true }))
 
+app.use(cookies());
 
 
 app.use(express.static(path.join(__dirname, '../../client/dist')))

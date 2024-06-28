@@ -54,6 +54,22 @@ function LogInScreen(){
         }).then(l=>l.status===200 ? confirmLogin() : console.log(l))
     }
 
+    const onLoginTest= async ()=>{
+        const body = {
+            pseudo : "oui",
+            password : "oui"
+        }
+        fetch(backEndUrl+"/login",{
+            credentials: 'include',
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(body)
+        })
+        // .then(l=>l.status===200 ? confirmLogin() : console.log(l))
+    }
+
     const confirmLogin = async()=>{
         setCookies("access_token",pseudo)
     }
@@ -81,6 +97,9 @@ function LogInScreen(){
                 : <ClassicButton clickAction={onSignUp} text="S'inscrire"/>
                 }
             </div>
+            <ClassicButton clickAction={onLoginTest} text="/login"/>
+            <ClassicButton clickAction={()=>fetch(backEndUrl+"/me",{
+            credentials: 'include',})} text="/me"/>
 
         </div>
     </div>)

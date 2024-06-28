@@ -11,7 +11,9 @@ const User = databaseConnection.define("user", {
         type:DataTypes.INTEGER,
         defaultValue:1200
     },
-    password:DataTypes.TEXT
+    password:DataTypes.TEXT,
+    tokenId:DataTypes.UUID,
+    tokenValidity:DataTypes.UUID
 });
 
 

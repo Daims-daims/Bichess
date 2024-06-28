@@ -1,5 +1,7 @@
 'use strict';
 
+const { DataTypes } = require('sequelize');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -21,6 +23,13 @@ module.exports = {
       elo: {
         type: Sequelize.INTEGER,
         defaultValue: 1200
+      },
+      tokenId:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
+      },
+      tokenValidity:{
+        type:Sequelize.DATE
       },
       createdAt: {
         type: Sequelize.DATE
