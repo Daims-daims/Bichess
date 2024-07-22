@@ -1,4 +1,4 @@
-import { createRoom, getResultRoom } from "../controllers/chessRoomController";
+import { createRoom } from "../controllers/chessRoomController";
 import { app ,wssList} from "../index"
 
 const express = require('express')
@@ -22,11 +22,6 @@ router.get("/testCreateRoom",(req:Request,res:Response)=>{
     const id  = generateId()
     console.log("creation room : "+id)
     createRoom(id,"oui","non").then(l=>res.status(200).send(l))
-})
-router.get("/testGetResultRoom",(req:Request,res:Response)=>{
-    getResultRoom('AAAAAAAA').then(l=>{
-        res.status(200).send(l)
-    })
 })
 
 export default router

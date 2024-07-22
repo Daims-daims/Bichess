@@ -1,8 +1,12 @@
 import chessBoard from "./chessBoard.model"
 import chessRoomModel from "./chessRoom.model"
+import Friend from "./friends.model";
 import User from "./user.model"
 
-User.belongsToMany(User, { through: 'Friends', as: 'friends', foreignKey: 'userId' })
+User.hasMany(Friend, { as: 'SentRequests', foreignKey: 'requestSenderId' });
+User.hasMany(Friend, { as: 'ReceivedRequests', foreignKey: 'requestReceiverId' });
+Friend.belongsTo(User, { as: 'Sender', foreignKey: 'requestSenderId' });
+Friend.belongsTo(User, { as: 'Receiver', foreignKey: 'requestReceiverId' });
 
 User.hasMany(chessRoomModel,{
     foreignKey:'whitePiecesId',

@@ -1,15 +1,13 @@
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import '../../App.scss'
-import ClassicButton from '../../components/Button/ClassicButton'
 import '../../styles/constante.scss'
-import { backEndUrl } from '../../Constante'
 import {Friend} from "./friendsInterface"
 import FriendsList from './FriendsList'
 import FriendsRequest from './FriendsRequest'
 import FriendsAdd from './FriendsAdd'
-import { testFriendsList } from './friendsDataExample'
 import FriendsHistory from './FriendsHistory'
+import useFriendList from '../../hooks/useFriendList'
 
 interface Props{
   pseudo : string
@@ -21,7 +19,9 @@ function Friends({pseudo}:Props) {
 
   const [friendSelected,setFriendSelected] = useState<Friend|null>(null)
 
-  const [friendsList, setFriendsList] = useState<Friend[]>(testFriendsList)
+  // const [friendsList, setFriendsList] = useState<Friend[]>(testFriendsList)
+
+  const {friendList} = useFriendList()
 
   const [expandedMenu,setExpandedMenu] = useState('friends')
 
@@ -49,10 +49,10 @@ function Friends({pseudo}:Props) {
     else 
     setFriendSelected(friendClicked)
     }
-
+    console.log("friendsList",friendList)
   return <div style={{width:"100%",display:"flex",flexDirection:"row",margin:"50px  100px",alignItems:'start', gap:"50px",justifyContent:"space-around",boxSizing:'content-box',overflow:"hidden"}}>
            <div style={{width:"100%",display:"flex",flexDirection:"column",gap:"30px",maxHeight:"100%", overflow:"hidden"}}>
-            <FriendsList  expanded={expandedMenu==="friends"} updateExpanded={()=>updateExpand("friends")} friendSelected={friendSelected} friendsList={friendsList} updateFriendSelected={updateFriendSelected} />
+            <FriendsList  expanded={expandedMenu==="friends"} updateExpanded={()=>updateExpand("friends")} friendSelected={friendSelected} friendsList={friendList.filter(l=>l.accepted && ! l.pending)} updateFriendSelected={updateFriendSelected} />
             <FriendsRequest expanded={expandedMenu==="request"} updateExpanded={()=>updateExpand("request")} />
             <FriendsAdd  expanded={expandedMenu==="search"} updateExpanded={()=>updateExpand("search")} friendsList={[]} friendSelected={null}/>
            </div>

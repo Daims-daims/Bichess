@@ -32,7 +32,7 @@ function FriendsUserComponent({userToDisplay,selected,updateUserRequest}:Props) 
   return <div   onMouseEnter={()=>setIsHovered(true)} 
                 onMouseLeave={()=>setIsHovered(false)}
                 style={{display:"flex",
-                        width:"100%",
+                        // width:"100%",
                         boxSizing:"border-box",
                         flexDirection:"row",
                         justifyContent:"space-between",

@@ -72,7 +72,7 @@ const FriendsAdd = ({expanded,updateExpanded,friendsList}:Props)=>{
                         <ClassicButton clickAction={searchUser} text="Rechercher" />
                     </div>}
                 {expanded && searchInput!=="" && <p style={{ color: color.primary_color, fontSize: "26px", fontWeight: 700 }}> Résultat de la recherche </p>}
-                {expanded && searchInput!=="" && !loading && <div className="fadeHeight" style={{ maxHeight: expanded ? '300px' : "0px", overflow: "scroll" }}>
+                {expanded && searchInput!=="" && !loading && <div className="fadeHeight noScrollBar" style={{ maxHeight: expanded ? '300px' : "0px", overflow: "hidden scroll" }}>
                     {listUserToDisplay}
                 </div>}
                 {expanded && searchInput!=="" && loading && <p style={{ color: color.primary_color, marginLeft:"20px",fontSize: "18px", fontWeight: 600 }}> Chargement </p>}

@@ -20,6 +20,66 @@ const testFriendsList:Friend[] =[
       pseudo:"ouai",
       numberGame :5,
       score:4.5
+    },
+    {
+      pseudo:"oui",
+      numberGame :3,
+      score:1
+    },
+    {
+      pseudo:"non",
+      numberGame :12,
+      score:10
+    },
+    {
+      pseudo:"ouai",
+      numberGame :5,
+      score:4.5
+    },
+    {
+      pseudo:"oui",
+      numberGame :3,
+      score:1
+    },
+    {
+      pseudo:"non",
+      numberGame :12,
+      score:10
+    },
+    {
+      pseudo:"ouai",
+      numberGame :5,
+      score:4.5
+    },
+    {
+      pseudo:"oui",
+      numberGame :3,
+      score:1
+    },
+    {
+      pseudo:"non",
+      numberGame :12,
+      score:10
+    },
+    {
+      pseudo:"ouai",
+      numberGame :5,
+      score:4.5
+    },
+    {
+      pseudo:"oui",
+      numberGame :3,
+      score:1
+    },
+    {
+      pseudo:"non",
+      numberGame :12,
+      score:10
+    },
+    {
+      pseudo:"ouai",
+      numberGame :5,
+      score:4.5
     }
   ]
 

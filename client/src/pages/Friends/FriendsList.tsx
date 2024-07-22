@@ -1,5 +1,6 @@
 import {Friend} from "./friendsInterface"
 import FriendsComponent from "./FriendsComponent"
+import { useState } from "react"
 
 interface Props{
     expanded:boolean,
@@ -12,7 +13,9 @@ interface Props{
 const FriendsList = ({expanded,updateExpanded,friendsList,friendSelected,updateFriendSelected}:Props)=>{
 
 
-     const listFriendsToDisplay = []   
+    const listFriendsToDisplay = []   
+
+
     for(let i = 0 ; i < friendsList.length;i++){
         listFriendsToDisplay.push(<FriendsComponent key={friendsList[i].pseudo} 
                                                     selected={friendSelected !==null && friendSelected.pseudo === friendsList[i].pseudo}
@@ -24,7 +27,7 @@ const FriendsList = ({expanded,updateExpanded,friendsList,friendSelected,updateF
                 style={{userSelect: 'none',position:"relative",margin:"-20px",marginBottom:"-15px",padding:"20px"}}
                 onClick={()=>updateExpanded()}   
                 >Liste d'amis</p>
-            <div className="fadeHeight" style = {{maxHeight:expanded ? '300px':"0px",overflow:"scroll"}}>
+            <div className="fadeHeight noScrollBar" style = {{maxHeight:expanded ? '300px':"0px",overflowY:"scroll",overflowX:"hidden"}}>
                 {listFriendsToDisplay}
             </div>
            </div>

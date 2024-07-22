@@ -3,16 +3,19 @@ import FormTextInput from '../FormInput/FormTextInput'
 import './logIn.scss'
 import ClassicButton from '../Button/ClassicButton'
 import { backEndUrl } from '../../Constante'
-import { useCookies } from 'react-cookie'
+import { useAuth } from '../../hooks/useAuth'
+
+// TODO : refactor signup
 
 function LogInScreen(){
+    
+    const {login} = useAuth();
 
     const [pseudo,setPseudo] = useState<string>("")
     const [password,setPassword] = useState("")
     const [isLogIn,setLogIn] = useState(true)
     const [signUpState,setSignedUpState] = useState("")
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_,setCookies] = useCookies(["access_token"])
 
     const onChangePseudo = (e: React.FormEvent<HTMLInputElement>)=>{
         setPseudo(e.currentTarget.value)
@@ -41,45 +44,12 @@ function LogInScreen(){
     }
 
     const onLogin= async ()=>{
-        const body = {
-            pseudo : pseudo,
-            password : password
-        }
-        fetch(backEndUrl+"/login",{
-            method:"POST",
-            headers:{
-                "content-type":"application/json"
-            },
-            body:JSON.stringify(body)
-        }).then(l=>l.status===200 ? confirmLogin() : console.log(l))
+        login(pseudo,password)
     }
-
-    const onLoginTest= async ()=>{
-        const body = {
-            pseudo : "oui",
-            password : "oui"
-        }
-        fetch(backEndUrl+"/login",{
-            credentials: 'include',
-            method:"POST",
-            headers:{
-                "content-type":"application/json"
-            },
-            body:JSON.stringify(body)
-        })
-        // .then(l=>l.status===200 ? confirmLogin() : console.log(l))
-    }
-
-    const confirmLogin = async()=>{
-        setCookies("access_token",pseudo)
-    }
-
-    console.log(signUpState)
-    console.log(signUpState!=="")
 
     return (<div className="backgroundLogIn">
         <div className="logInWindow">
-
+            
             <div style={{display:"flex",flexDirection:"row",gap:"5px"}}>
                 <div className={isLogIn ? "btnLogIn active" : "btnLogIn"} onClick={()=>{resetCredentials();setLogIn(true)}}>Connexion</div>  
                 <div className={isLogIn ? "btnLogIn" : "btnLogIn active"} onClick={()=>{resetCredentials();setLogIn(false)}}>Inscription</div>  
@@ -97,9 +67,6 @@ function LogInScreen(){
                 : <ClassicButton clickAction={onSignUp} text="S'inscrire"/>
                 }
             </div>
-            <ClassicButton clickAction={onLoginTest} text="/login"/>
-            <ClassicButton clickAction={()=>fetch(backEndUrl+"/me",{
-            credentials: 'include',})} text="/me"/>
 
         </div>
     </div>)

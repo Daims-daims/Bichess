@@ -15,6 +15,7 @@ module.exports = {
     await queryInterface.bulkInsert('friends', [{
       requestSenderId: 1,
       requestReceiverId: 2,
+      accepted: true,
       pending: true,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -43,6 +44,7 @@ module.exports = {
       requestSenderId: 3,
       requestReceiverId: 4,
       pending: true,
+      accepted: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     },], {})

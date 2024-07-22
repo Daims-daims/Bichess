@@ -1,6 +1,6 @@
 import chessRoomModel from "../models/chessRoom.model";
 import chessBoard from "../models/chessBoard.model";
-import { Model } from "sequelize-typescript";
+import { Model } from "sequelize";
 import User from "../models/user.model";
 
 
@@ -65,27 +65,16 @@ const updatePGNBoard = async function (roomId: string, board: 1 | 2, PGN: string
 
 }
 
-const getResultRoom = async function (roomId: string) {
-    const chessRoom = await chessRoomModel.findByPk(roomId,
-        {
-            include: [
-                { model: chessBoard, as: 'firstBoard', attributes: ['result'] },
-                { model: chessBoard, as: 'secondBoard', attributes: ['result'] },
-                { model: User, as: 'whitePieces', attributes: ['pseudo'] },
-                { model: User, as: 'blackPieces', attributes: ['pseudo'] }]
-        }
-    )
-    if (!chessRoom) {
-        console.error("Room : " + roomId + " not found in database")
-        return
-    }
+const getResultRoom =  function (room: Model<any,any>,user?:number) {
 
-    const firstBoardResult: boardResult = chessRoom.getDataValue("firstBoard")
-    const secondBoardResult: boardResult = chessRoom.getDataValue("secondBoard")
+    const firstBoardResult: boardResult = room.getDataValue("firstBoard")
+    const secondBoardResult: boardResult = room.getDataValue("secondBoard")
 
-    return { room: chessRoom, result: mapResultToScore[firstBoardResult.result] + mapResultToScore[secondBoardResult.result] }
+    const rawResult = mapResultToScore[firstBoardResult.result] + mapResultToScore[secondBoardResult.result]
+    return { room: room.getDataValue("id"), result: user && user === room.getDataValue("blackPieces").getDataValue("id") ? 2 - rawResult : rawResult  }
 
-    console.log(chessRoom)
 }
+
+
 
 export { createRoom, getRoom, getResultRoom }

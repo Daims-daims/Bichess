@@ -35,6 +35,10 @@ html{
   box-sizing: border-box;
 }
 
+.noScrollBar::-webkit-scrollbar {
+  display: none;
+}
+
 p{
   font-family: constante.$font-stack;
 }

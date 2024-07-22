@@ -2,7 +2,10 @@
 interface Friend{
     pseudo : string,
     numberGame : number,
-    score : number
+    score : number,
+    accepted:boolean,
+    pending:boolean,
+    isReceiver:boolean
   }
 
 interface UserRequest extends Friend{

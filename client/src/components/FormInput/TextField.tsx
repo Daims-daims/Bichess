@@ -11,6 +11,7 @@ interface Props{
 function TextField({name,value,typeField,placeholder,handleChange}:Props){
 
     const [showField,setShowField] = useState(typeField=="text")
+    
 
     return <div className="textInputFieldContainer" >
             <input type={showField ? "text" : "password"} placeholder={placeholder} className="textInputField" name={name} value={value} onChange={handleChange}></input>

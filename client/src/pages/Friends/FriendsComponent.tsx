@@ -21,7 +21,6 @@ function FriendsComponent({friendToDisplay,onClickGeneral,selected}:Props) {
                 onMouseLeave={()=>setIsHovered(false)}
                 onClick={()=>onClickGeneral(friendToDisplay)}
                 style={{display:"flex",
-                        width:"100%",
                         flexDirection:"row",
                         justifyContent:"space-between",
                         placeItems:"center",
