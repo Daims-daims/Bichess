@@ -1,7 +1,6 @@
 @use "../../styles/constante.scss";
 
-.btnClassic{
-    background-color: constante.$primary-color;
+.button{
     padding: 10px;
     color:constante.$primary-background;
     font-weight: 800;
@@ -10,19 +9,27 @@
     cursor: pointer;
 }
 
-.btnDisabled{
-    background-color: rgba(constante.$primary-color,0.4);
-    padding: 10px;
-    color:constante.$primary-background;
-    font-weight: 800;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
+
+.btnClassic{
+    background-color: constante.$primary-color;
 }
 
 .btnClassic:hover{
     background-color: constante.$primary-bold;
 }
+
 .btnClassic:active{
     background-color: constante.$primary-color;
+}
+
+.btnSuccess{
+    background-color: constante.$success-color;
+}
+
+.btnError{
+    background-color: constante.$error-color;
+}
+
+.btnDisabled{
+    background-color: rgba(constante.$primary-color,0.4);
 }

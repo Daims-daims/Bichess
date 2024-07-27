@@ -15,6 +15,7 @@ import { gameRoomWebSocketHandler } from "./Services/webSocketList";
 import userConnection from './routes/userConnection'
 import gameRoute from "./routes/gameRoute";
 import friendRoute from "./routes/friendsRoute";
+import userRoute from "./routes/userRoute"
 
 const bodyParser = require('body-parser')
 
@@ -46,6 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(userConnection)
 app.use(gameRoute)
 app.use(friendRoute)
+app.use(userRoute)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

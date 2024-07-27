@@ -1,5 +1,13 @@
+import { User } from "../../type"
 
-interface Friend{
+export enum gameResult{
+  White,
+  Black,
+  Draw
+}
+
+export interface Friend{
+    id:number,
     pseudo : string,
     numberGame : number,
     score : number,
@@ -8,16 +16,22 @@ interface Friend{
     isReceiver:boolean
   }
 
-interface UserRequest extends Friend{
-  requestSent:boolean
+export interface UserRequest extends User{
+  statusFriend:"friend" | "pending" | "none"
 }
 
-interface HistoryGame{
+export interface HistoryGame{
   dateGame : Date,
   scoreFirstGame : number,
   scoreSecondGame : number
 }
 
 
-
-export type {Friend,UserRequest,HistoryGame}
+export interface chessRoomHistoryInterface{
+  whitePieceId:number,
+  blackPieceId:number,
+  firstBoardResult:gameResult,
+  secondBoardResult:gameResult,
+  dateGame:Date,
+  gameRoomId:string
+}

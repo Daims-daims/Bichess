@@ -5,12 +5,13 @@ interface Props{
     clickAction:()=>void,
     disabledStyle?:boolean
     text:string
+    className?:string
 }
 
-function ClassicButton({clickAction,text,disabledStyle}:Props){
+function ClassicButton({clickAction,text,disabledStyle,className}:Props){
     return <div onClick={(e:React.MouseEvent<HTMLDivElement>)=> {e.stopPropagation()
                                                                     clickAction()}} 
-                className={disabledStyle ? "btnDisabled" : "btnClassic"}>
+                className={"button " + (disabledStyle ? "btnDisabled" : (className ? className : "btnClassic"))}>
         {text}
     </div>
 }

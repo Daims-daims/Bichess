@@ -15,7 +15,7 @@ module.exports = {
     await queryInterface.bulkInsert('chessRooms', [{
       roomId: 'AAAAAAAA',
       whitePiecesId: 1,
-      blackPiecesId: 2,
+      blackPiecesId: 3,
       firstBoardId: 1,
       secondBoardId: 2,
       createdAt: new Date(),

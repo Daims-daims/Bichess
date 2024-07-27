@@ -5,6 +5,7 @@ import '../../styles/constante.scss'
 import {Friend} from './friendsInterface'
 import { color } from '../../Constante'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 interface Props{
@@ -35,7 +36,9 @@ function FriendsComponent({friendToDisplay,onClickGeneral,selected}:Props) {
         </div>
         <div style={{display:"flex",gap:"10px",padding:"5px"}}>
             <ClassicButton clickAction={function (): void {throw new Error('Function not implemented.')} } text={"Inviter"} />
-            <ClassicButton clickAction={function (): void {throw new Error('Function not implemented.')} } text={"Voir historique"} />
+            <Link to={'/profile/'+friendToDisplay.pseudo} style={{ textDecoration: 'none' }}>
+                <ClassicButton clickAction={function (): void {} } text={"Voir Profil"} />
+            </Link>
         </div>
 
     </div>

@@ -70,8 +70,11 @@ const getResultRoom =  function (room: Model<any,any>,user?:number) {
     const firstBoardResult: boardResult = room.getDataValue("firstBoard")
     const secondBoardResult: boardResult = room.getDataValue("secondBoard")
 
-    const rawResult = mapResultToScore[firstBoardResult.result] + mapResultToScore[secondBoardResult.result]
-    return { room: room.getDataValue("id"), result: user && user === room.getDataValue("blackPieces").getDataValue("id") ? 2 - rawResult : rawResult  }
+    let rawResult = (mapResultToScore[firstBoardResult.result] + mapResultToScore[secondBoardResult.result]) / 2
+    if(rawResult!==0.5)
+       rawResult = Math.round(rawResult)
+
+    return { room: room.getDataValue("id"), result: user && user === room.getDataValue("blackPieces").getDataValue("id") ? 1 - rawResult : rawResult  }
 
 }
 

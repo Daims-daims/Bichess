@@ -24,6 +24,7 @@ const authMiddleware = (req:Request,res:Response,next:NextFunction)=>{
       retrieveSession(sessionToken).then(sessionInfo=>{
         if(sessionInfo.status===200){
           res.locals.userId = sessionInfo.user?.getDataValue("id");  
+          res.locals.pseudo = sessionInfo.user?.getDataValue("pseudo");  
           next()
         }
         else{

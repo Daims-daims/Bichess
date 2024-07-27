@@ -2,12 +2,13 @@
 import { useState } from 'react'
 import '../../App.scss'
 import '../../styles/constante.scss'
-import {Friend} from "./friendsInterface"
+import {chessRoomHistoryInterface, Friend} from "./friendsInterface"
 import FriendsList from './FriendsList'
 import FriendsRequest from './FriendsRequest'
 import FriendsAdd from './FriendsAdd'
 import FriendsHistory from './FriendsHistory'
 import useFriendList from '../../hooks/useFriendList'
+import apiCall from '../../lib/api'
 
 interface Props{
   pseudo : string
@@ -21,9 +22,11 @@ function Friends({pseudo}:Props) {
 
   // const [friendsList, setFriendsList] = useState<Friend[]>(testFriendsList)
 
-  const {friendList} = useFriendList()
+  const {friendList,addFriendToList,deleteFriendFromList} = useFriendList()
 
   const [expandedMenu,setExpandedMenu] = useState('friends')
+
+  const [historyWithUser,setHistoryWithUser] = useState<chessRoomHistoryInterface[]>([])
 
 
   const updateExpand = (expandMenu:string)=>{
@@ -33,32 +36,32 @@ function Friends({pseudo}:Props) {
       setExpandedMenu(expandMenu)
   }
 
-
-  // useEffect(() => {
-  //   const responseFriendsList = fetch(backEndUrl+"/friends/"+pseudo)
-  //   responseFriendsList.then(response=>{
-  //     response.json().then(friends=>setFriendsList(friends))
-  //   })
-  // },[])
+  
 
   const updateFriendSelected=(friendClicked:Friend)=>{
-    if(! friendSelected)
+    if(! friendSelected || friendSelected.pseudo !== friendClicked.pseudo){
       setFriendSelected(friendClicked)
+      getHistoryFriend(friendClicked)
+    }
     else if(friendSelected.pseudo === friendClicked.pseudo)
       setFriendSelected(null)
-    else 
-    setFriendSelected(friendClicked)
-    }
-    console.log("friendsList",friendList)
+  }
+
+  const getHistoryFriend=(friend:Friend)=>{
+    apiCall<chessRoomHistoryInterface[]>("/historyUser/"+friend.id,"GET")
+      .then(r=>{console.log(r),setHistoryWithUser(r)})
+  }
+
+  console.log("friendsList",friendList)
   return <div style={{width:"100%",display:"flex",flexDirection:"row",margin:"50px  100px",alignItems:'start', gap:"50px",justifyContent:"space-around",boxSizing:'content-box',overflow:"hidden"}}>
            <div style={{width:"100%",display:"flex",flexDirection:"column",gap:"30px",maxHeight:"100%", overflow:"hidden"}}>
             <FriendsList  expanded={expandedMenu==="friends"} updateExpanded={()=>updateExpand("friends")} friendSelected={friendSelected} friendsList={friendList.filter(l=>l.accepted && ! l.pending)} updateFriendSelected={updateFriendSelected} />
-            <FriendsRequest expanded={expandedMenu==="request"} updateExpanded={()=>updateExpand("request")} />
-            <FriendsAdd  expanded={expandedMenu==="search"} updateExpanded={()=>updateExpand("search")} friendsList={[]} friendSelected={null}/>
+            <FriendsRequest expanded={expandedMenu==="request"} friendsList={friendList.filter(l=>l.pending)} updateExpanded={()=>updateExpand("request")} addFriendToList={addFriendToList} deleteFriendFromList={deleteFriendFromList} />
+            <FriendsAdd  expanded={expandedMenu==="search"} updateExpanded={()=>updateExpand("search")} friendsList={friendList} addFriendToList={addFriendToList} friendSelected={null}/>
            </div>
            <div style={{width:"100%"}}>
             {friendSelected!==null && 
-             <FriendsHistory friendSelected={friendSelected}/>
+             <FriendsHistory friendSelected={friendSelected} historyGames={historyWithUser}/>
             }
           </div>
         </div>
