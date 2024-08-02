@@ -124,7 +124,7 @@ const GameRoom = ({pseudo}:Props)=>{
                 <div>vs</div> 
                 <p style={{color:color.primary_extra_bold}}>{scorePlayer2}</p> 
                 <div style={{flex:1}}>{pseudoOpponent}</div>
-            </div>0
+            </div>
             <div style={{height:"100%",width:"100%",display:"flex",flexDirection:(colorPlayerBoard_1==="b" ? "row-reverse" : "row"),gap:"50px"}}>
                 <ChessGameOnline pieces={piecesBoard_1} 
                                                 pseudo={pseudo} 

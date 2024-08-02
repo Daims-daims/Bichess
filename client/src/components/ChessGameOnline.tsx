@@ -4,6 +4,9 @@ import { dictCoordToLetter, lengthGame } from "../Constante"
 import { IPiece } from "../lib/Type"
 import { ResultGame } from "./ResultGame"
 import { useClocksGame } from "../hooks/useClocksGame"
+import DrawButton from "./Button/drawButton"
+import ResignButton from "./Button/ResignButton"
+import { useState } from "react"
 
 interface Props{
     invert:boolean,
@@ -24,7 +27,7 @@ function ChessGameOnline({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onl
     
     const [countdownWhite,countdownBlack, switchTimer] = useClocksGame(60*lengthGame,!onlineGame)
 
-
+    const [menuActivated,setMenuActivated] = useState("")
 
     const listLetter = []
     for(let x = invert ? 7 : 0 ;invert ? x>-1 : x<8;invert ? x--:x++){
@@ -44,14 +47,13 @@ function ChessGameOnline({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onl
     return (
         <div style={{display:"flex",gap:"10px",width:"100%",height:"fit-content"}}>
             <div style={{display:"grid",width:"100%",flexDirection:"column",gap:"0px",justifyItems:((indexBoard==1 && !invert) || (indexBoard==2 && !invert) ? "end" : "start")}}>
-                <Clock countdown={invert ? countdownWhite : countdownBlack}/>
+                    <Clock countdown={invert ? countdownWhite : countdownBlack}/>
                     <div style={{display:"flex",width:'100%',flexDirection:((indexBoard==1 && !invert) || (indexBoard==2 && !invert) ? "row" : "row-reverse"),
                             justifyContent:"flex-end",marginTop:"10px"}}>
                         <div className="rowFile">
                             {listNumber}
                         </div>
                         <div style={{maxWidth:'70vmin',width:"100%"}}>
-                            {result!=="" && <ResultGame result={result} />}
                             <Chessboard key={roomId ? roomId+(invert ? 2 : 1) : invert ? 2 : 1} 
                                         invert={invert} 
                                         playerToPlay={playerToPlay} 
@@ -59,13 +61,19 @@ function ChessGameOnline({pieces,pseudo,invert,roomId,colorPlayer,indexBoard,onl
                                         onGameOver={()=>console.log("game over")} 
                                         updatePieces={updatePieces} 
                                         disableChessBoard={playerToPlay!==colorPlayer && onlineGame} 
-                                        pieces={pieces} />
+                                        pieces={pieces}>
+                            {result!=="" && <ResultGame result={result} />}
+                            </Chessboard> 
                             <div className="columnFile">
                                 {listLetter}
                             </div>
                         </div>
                     </div>
-                <Clock countdown={invert ? countdownBlack : countdownWhite}/>
+                    <div style={{display:"flex",gap:"10px",flexDirection:((indexBoard==1 && !invert) || (indexBoard==2 && !invert) ? "row-reverse" : "row"),alignItems:"center"}}>
+                        <Clock countdown={invert ? countdownBlack : countdownWhite}/>
+                        <DrawButton isActivated={menuActivated=="draw"} onDrawAction={()=>null} setActivatedMenu={setMenuActivated}/>
+                        <ResignButton isActivated={menuActivated=="resign"} onResignAction={()=>null} setActivatedMenu={setMenuActivated} />
+                    </div>
             </div>
         </div>
     )

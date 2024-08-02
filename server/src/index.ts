@@ -33,7 +33,7 @@ const app = express();
 const port = 3030;
 
 
-app.use(cors({ origin: "http://localhost:5173",
+app.use(cors({ origin: ["http://localhost:5173","http://localhost:5174"],
   credentials: true }))
 
 app.use(cookies());

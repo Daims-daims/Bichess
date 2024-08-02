@@ -30,7 +30,8 @@ const color={
     primary_color_low_fade : "#FF855166",
     primary_bold:"#ff6e30",
     primary_extra_bold:"#E64500",
-    primary_background:"#FFE3D7"
+    primary_background:"#FFE3D7",
+    dark_background:"#333"
 }
 
 export {dictCoordToLetter,dictLetterToCoord,lengthGame,backEndUrl,color}

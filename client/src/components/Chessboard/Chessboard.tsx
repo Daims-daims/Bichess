@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { ReactElement, useRef, useState } from "react"
 import "./chessboard.scss"
 import Tile from "./Tile"
 import { availableMove, listAvailableMove, moveToString, playerStillHasMove, specialMove } from "../../lib/Piece"
@@ -11,14 +11,15 @@ interface Props{
     playerToPlay : "w" | "b"
     updatePieces : (p:IPiece[])=>void
     invert : boolean,
-    disableChessBoard :boolean
+    disableChessBoard :boolean,
+    children? :boolean | ReactElement 
 }
 
 
 
 
 
-function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableChessBoard}:Props){
+function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableChessBoard,children}:Props){
 
     const [selectedPiece,setSelectedPiece] = useState<HTMLElement>()
     const [selectedPieceCoord,setSelectedPieceCoord] = useState<coordinate>()
@@ -38,8 +39,11 @@ function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableCh
             setSelectedPieceCoord(coordGrab)
             setListTileAttacked(listAvailableMove(pieces.find(p=>p.x===coordGrab.x && p.y === coordGrab.y),pieces))
             const squareSize = boardRef.current?.getBoundingClientRect().width/8
-            const x = e.clientX - squareSize / 2 + window.scrollX;
-            const y = e.clientY - squareSize / 2 + window.scrollY;
+            const x = e.clientX-  boardRef.current?.getBoundingClientRect().x - squareSize/2;
+            const y = e.clientY-  boardRef.current?.getBoundingClientRect().y - squareSize/2;
+            console.log(boardRef.current?.getBoundingClientRect())
+            console.log( e.clientX, e.clientY)
+
             element.style.position = "absolute";
             element.style.left = `${x}px`;
             element.style.top = `${y}px`;
@@ -51,8 +55,8 @@ function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableCh
     const onMouseMove = (e:React.MouseEvent)=>{
         if(selectedPiece && boardRef.current) {
             const squareSize = boardRef.current?.getBoundingClientRect().width/8
-            const x = e.clientX - squareSize/2 + window.scrollX;
-            const y = e.clientY - squareSize/2 + window.scrollY;
+            const x = e.clientX-  boardRef.current?.getBoundingClientRect().x - squareSize/2;
+            const y = e.clientY-  boardRef.current?.getBoundingClientRect().y - squareSize/2;
             selectedPiece.style.position = "absolute"
             selectedPiece.style.left = `${x}px`;
             selectedPiece.style.top = `${y}px`;
@@ -95,7 +99,9 @@ function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableCh
         }
     }
 
-    return <><div onMouseUp={onUngrab} onMouseMove={onMouseMove} className="chessboard" ref={boardRef}>{board}
+    return <><div onMouseUp={onUngrab} onMouseMove={onMouseMove} className="chessboard" ref={boardRef}>
+        {children}
+        {board}
    </div>
    </>
 }

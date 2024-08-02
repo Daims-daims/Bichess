@@ -1,0 +1,31 @@
+@use "../styles/constante.scss";
+
+.boxValidation{
+    display:flex;
+    color:constante.$primary-background;
+    border-radius:5px;
+    box-sizing:content-box;
+    padding:20px;
+    flex-direction:column;
+    gap:15px;
+    width : 130px;
+    position:absolute;
+    align-items: center;
+    top:-125px;
+    left: -65px;
+    font-weight: 700;
+    background-color:rgba(constante.$background-color,0.97)
+}
+
+.iconGame{
+    width: 100%;
+    height: 100%;
+    color:constante.$primary-color;
+}
+.boxIconGame{
+    border-radius: 2px;
+    transition: all 0.1s;
+}
+.boxIconGame:hover{
+    background-color: rgba(constante.$primary-background,0.2);
+}
