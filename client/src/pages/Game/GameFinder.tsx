@@ -4,8 +4,11 @@ import '../../App.scss'
 import ClassicButton from '../../components/Button/ClassicButton'
 import '../../styles/constante.scss'
 import './Game.scss'
-import LoadingScreenGame from './LoadingScreenGame'
+import QueuingScreenGame from './QueuingScreenGame'
 import { useNavigate } from 'react-router-dom'
+import FormTextInput from '../../components/FormInput/FormTextInput'
+import TextField from '../../components/FormInput/TextField'
+import InvitingScreenGame from './InvitingScreenGame'
 
 interface Props{
   pseudo:string
@@ -18,15 +21,18 @@ interface Player{
 
 function GameFinder({pseudo}:Props) {
 
-  const [isLoading,setIsLoading] = useState(false)
+  const [isQueuing,setIsQueuing] = useState(false)
+  const [isInviting,setIsInviting] = useState(false)
+  const [roomIdInvitation,setRoomIdInvitation] = useState("")
   const navigate = useNavigate()
+  const [accessCode,setAccessCode] = useState("")
 
   const resetLoading= () => {
-    setIsLoading(false)
+    setIsQueuing(false)
   }
 
   const joinNewGame = async () => {
-    setIsLoading(true)
+    setIsQueuing(true)
     const cred =  await fetch("http://localhost:3030/room/"+pseudo,{
       method:"GET"
   })
@@ -35,7 +41,22 @@ function GameFinder({pseudo}:Props) {
   navigate("/game/"+res.idGames.replace("room",""))
   }
 
+  const createNewRoom = async () => {
+    const cred =  await fetch("http://localhost:3030/room/"+pseudo,{
+      method:"POST"
+  })
+  const res:Player = await cred.json()
+  console.log(res)
+  setIsInviting(true)
+  setRoomIdInvitation(res.idGames.replace("room",""))
+  navigate("/game/"+res.idGames.replace("room",""))
+  }
 
+  const handleChange = (e : React.FormEvent<HTMLInputElement>)=>{
+    setAccessCode(e.currentTarget.value)
+  }
+  console.log(isInviting,isQueuing);
+  
   return <div style={{width:"100%",display:"flex",flexDirection:"row",padding:"100px 200px",alignItems:'start', gap:"50px",justifyContent:"space-around"}}>
            <div className='menuBox'>
             <p className='menuBoxHeader'>Rejoindre une partie</p>
@@ -45,24 +66,24 @@ function GameFinder({pseudo}:Props) {
             </div>
             <div className='menuBoxButtonSection'>
               <p className='menuBoxSectionTitle'>Rejoindre une partie avec un code</p>
-              <div style={{display:"flex"}}>
-                {// placer TextArea}\}
-                  }
-                <ClassicButton text='Rejoindre' clickAction={()=>setIsLoading(true)}></ClassicButton>
+              <div style={{display:"flex",gap:"10px",maxWidth:"250px"}}>
+                <TextField placeholder="Code d'accés" name='accessCode' typeField='text' value={accessCode} handleChange={handleChange} darkerBackground={true} />
+                <ClassicButton text='Rejoindre' clickAction={()=>navigate("/game/"+accessCode.toUpperCase())}></ClassicButton>
               </div>
             </div>
            </div>
            <div className='menuBox'>
             <p className='menuBoxHeader'>Créer une partie</p>
             <div className='menuBoxButtonSection'>
-              <p className='menuBoxSectionTitle'>Créer un salon joignable par tous</p>
-              <ClassicButton text='Créer un salon' clickAction={()=>console.log("Créer une partie")}></ClassicButton>
+              <p className='menuBoxSectionTitle'>Créer un salon joignable par code</p>
+              <ClassicButton text='Créer un salon' clickAction={createNewRoom}></ClassicButton>
             </div>
-            <div className='menuBoxButtonSection'>
-              <p className='menuBoxSectionTitle'>Inviter un ami à une partie</p>
-            </div>
+            {/* <div className='menuBoxButtonSection'>
+              <p className='menuBoxSectionTitle'>Inviter un ami à une partie</p> To be done later when socket connexion is made with whole client
+            </div> */}
            </div>
-           {isLoading && <LoadingScreenGame resetLoading={resetLoading}/>}
+           {isQueuing && <QueuingScreenGame resetLoading={resetLoading}/>}
+           {isInviting && <InvitingScreenGame resetLoading={resetLoading} roomId={roomIdInvitation} />}
         </div>
 }
 

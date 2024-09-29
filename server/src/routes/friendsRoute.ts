@@ -127,11 +127,9 @@ router.post("/sendFriendRequest",[authMiddleware,async (req:Request,res:Response
 router.get("/historyUser/:idSearch",[authMiddleware,async (req:Request,res:Response)=>{
   const idSearch = req.params.idSearch
   const userId = res.locals.userId
-  console.log('pseudoSearch : ',idSearch)
   
   getHistoryFriendFromId(userId,parseInt(idSearch))
     .then(listRoomsFormatted=>{
-      console.log(listRoomsFormatted)
       res.status(200).send(JSON.stringify(listRoomsFormatted))
     })
     .catch(err=>{

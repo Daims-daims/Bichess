@@ -10,7 +10,7 @@ import Home from './pages/Home'
 import Game from './pages/Game/GameFinder'
 import FriendsPage from './pages/Friends/FriendsPage'
 import History from './pages/History'
-import Profile from './pages/Profile'
+import Profile from './pages/Profile/Profile'
 import GameRoom from './pages/Game/GameRoom'
 import useAccountStore from './hooks/useAccountStore'
 import {useAuth} from './hooks/useAuth'
@@ -45,10 +45,11 @@ function App() {
           <Route path="/friends" element={<FriendsPage pseudo={account.pseudo} />}/>
           <Route path="/history" element={<History />}/>
           <Route path="/profile" element={<Profile />}/>
+          <Route path="/profile/*" element={<Profile />}/>
           <Route path="*" element={<Home player={account.pseudo}/>}/>
         </Routes>
         </div>}
-      <LeftBar logOut={logout}/>
+      <LeftBar logOut={logout} pseudo={account?.pseudo}/>
       </BrowserRouter>
 }
 

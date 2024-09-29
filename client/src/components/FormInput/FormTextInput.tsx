@@ -2,7 +2,7 @@ import TextField from "./TextField"
 import "./formComponent.scss"
 
 interface Props{
-    label : string,
+    label? : string,
     name:string,
     value : string,
     typeField:string,
@@ -12,7 +12,7 @@ interface Props{
 
 function FormTextInput({label,name,value,typeField,placeholder,handleChange}:Props){
     return <div className="textInputDiv">
-        <label className="textInputLabel">{label}</label>
+        {label && <label className="textInputLabel">{label}</label>}
         <TextField typeField={typeField} placeholder={placeholder} name={name} value={value} handleChange={handleChange}/>
     </div>
 }

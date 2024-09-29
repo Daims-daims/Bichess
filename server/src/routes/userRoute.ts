@@ -12,8 +12,6 @@ import chessBoard from '../models/chessBoard.model';
 
 router.get("/searchUser/:pseudoSearch",[authMiddleware,async (req:Request,res:Response)=>{
     const pseudoSearch = req.params.pseudoSearch
-    console.log('pseudoSearch : ',pseudoSearch)
-
     let response:userInterface[] = []
 
     User.findAll({

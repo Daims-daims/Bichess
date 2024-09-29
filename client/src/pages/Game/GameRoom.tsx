@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import LoadingScreenGame from "./LoadingScreenGame"
+import LoadingScreenGame from "./QueuingScreenGame"
 import { useNavigate } from "react-router-dom"
 import useChessBoard from "../../hooks/useChessBoard"
 import ChessGameOnline from "../../components/ChessGameOnline"
 import getScorePlayer from "../../lib/calculateScore"
 import { color } from "../../Constante"
+import InvitingScreenGame from "./InvitingScreenGame"
 
 interface Props{
     pseudo:string
@@ -24,7 +25,9 @@ const GameRoom = ({pseudo}:Props)=>{
     const navigate = useNavigate()
     
     const idRoom = location.pathname.split("/")[2]
+    console.log(location.pathname.split("/"))
     const [isLoading,setIsLoading] = useState(true)
+    const [isInviting,setIsInviting] = useState(false)
     const [pseudoOpponent,setPseudoOpponent] = useState("")
     const [piecesBoard_1,playerToPlayBoard_1,colorPlayerBoard_1,applyNewMoveBoard_1,initBoard_1,resultBoard_1] = useChessBoard();
     const [piecesBoard_2,playerToPlayBoard_2,colorPlayerBoard_2,applyNewMoveBoard_2,initBoard_2,resultBoard_2] = useChessBoard();
@@ -34,6 +37,7 @@ const GameRoom = ({pseudo}:Props)=>{
     console.log(idRoom)
 
     const resetLoading = ()=>{
+        if (connection.current) connection.current.close()
         setIsLoading(false)
         navigate("/game")
     }
@@ -43,8 +47,10 @@ const GameRoom = ({pseudo}:Props)=>{
             console.log("connecting to game as "+pseudo)
             const socket = new WebSocket("ws://localhost:8082/"+idRoom+"/"+pseudo)
             // Connection opened
+            socket.addEventListener('close',()=>navigate('/game'))
             socket.addEventListener("open", () => {
             // socket.send("Connection established")
+                socket.removeEventListener('close',()=>console.log("connection terminée"))
             })
             // Listen for messages
             socket.addEventListener("message", (event):void => {
@@ -64,6 +70,11 @@ const GameRoom = ({pseudo}:Props)=>{
                     else{
                         applyNewMoveBoard_2(msg.move)
                     }
+                }
+                if(msg.event === "info"){
+                    if (msg.content = "invitationGame")
+                        setIsInviting(true)
+
                 }
             })
             connection.current = socket
@@ -94,8 +105,6 @@ const GameRoom = ({pseudo}:Props)=>{
         }
     }, [resultBoard_1, resultBoard_2])
 
-
-
     const onNewMove = (newMove:string,board:0|1)=>{
         if(newMove[0]!="w" && newMove[0]!="b" ) throw new Error("Move wrongly formatted : "+ newMove);
         if(connection.current){
@@ -114,9 +123,10 @@ const GameRoom = ({pseudo}:Props)=>{
     const scorePlayer1 = getScorePlayer(colorPlayerBoard_1==="w" ? 1 : 2,resultBoard_1,resultBoard_2)
     const scorePlayer2 = getScorePlayer(colorPlayerBoard_1==="w" ? 2 : 1,resultBoard_1,resultBoard_2)
     console.log("oppoennet ! "+pseudoOpponent)
+    console.log(isLoading)
     return <div style={{width:"100%"}}>
-           {isLoading && <LoadingScreenGame resetLoading={resetLoading}/>}
-           {!isLoading && 
+           {isLoading && (isInviting ? <InvitingScreenGame resetLoading={resetLoading} roomId={idRoom}/> : <LoadingScreenGame resetLoading={resetLoading}/>)}
+           {/* {!isLoading &&  */}
            <div style={{height:"100vh",display:"flex",width:"100%",flexDirection:"column",placeItems:"center",gap:"10px"}}>
             <div style={{width:"100%",display:"flex",gap:"10px",fontSize:"64px",color:color.primary_color,fontWeight:800}}>
                 <div style={{flex:1,display:"flex",flexDirection:"row-reverse"}}>{pseudo}</div>
@@ -145,7 +155,8 @@ const GameRoom = ({pseudo}:Props)=>{
                                                 onNewMove={(move:string)=>onNewMove(move,1)}
                                                 result={resultBoard_2} />
                 </div>
-            </div>}
+            </div>
+            {/* } */}
            </div>
 
 }

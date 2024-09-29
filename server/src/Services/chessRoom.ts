@@ -32,6 +32,8 @@ interface IchessRoomInfo{
 class chessRoom {
 
     roomId:string
+    onInvitationOnly:boolean = false
+    userInvited : string|null = null
     player1: player = {pseudo:null,connected:false,wsClient:null}
     player2: player = {pseudo:null,connected:false,wsClient:null}
     chessRoomInfo: IchessRoomInfo|null = null
@@ -48,22 +50,35 @@ class chessRoom {
     }
 
     allPlayerConnected(){
-        console.log(this.player1.wsClient===null)
-        console.log(this.player2.wsClient===null)
+        console.log("test player connected : ")
+        console.log(this.player1.wsClient!==null)
+        console.log(this.player2.wsClient!==null)
         return this.player1.wsClient!== null && this.player2.wsClient!== null
     }
 
-    addWs(ws:WebSocket,pseudo : String){
-        console.log(pseudo)
+    addWs(ws:WebSocket,pseudo : string){
+        console.log(pseudo,this.roomId)
+        console.log(this.player1.pseudo,this.player1.wsClient)
+        console.log(this.player2.pseudo,this.player2.wsClient)
         if(this.player1.pseudo===pseudo && this.player1.wsClient===null){
             this.player1.wsClient=ws
         }
-        if(this.player2.pseudo===pseudo){ // rajouter else pour unificication joueur
+        else if(this.player2.pseudo===pseudo || (this.player2.pseudo === null && this.onInvitationOnly && (this.userInvited === null || this.userInvited===pseudo ))){ 
+            if(this.player2.pseudo === null ) this.player2.pseudo = pseudo
             this.player2.wsClient=ws
+        }
+        if(this.onInvitationOnly){
+            const msg = {"event":"info","content":"invitationGame"}
+            this.sendMessage(JSON.stringify(msg),pseudo)
         }
         if(this.allPlayerConnected()){
             this.startRoom()
         }
+    }
+
+    setOnInviteRoom(valueToSet : boolean,userInvited?:string){
+        this.onInvitationOnly = valueToSet 
+        if(userInvited) this.userInvited = userInvited
     }
 
     startRoom(){
@@ -110,9 +125,6 @@ class chessRoom {
     receptionMessage(data:string){
         const dataJson:messageReceivedWs = JSON.parse(data)
         this.sendAllMessage(JSON.stringify(dataJson))
-        console.log("Room "+this.roomId+" PGN board "+dataJson.boardIndex+" :")
-        console.log(dataJson );
-        console.log()
         if(dataJson.event==="move"){
             this.boardStates[dataJson.boardIndex] = dataJson.FENState
             this.addMoveToPGN(dataJson.move,dataJson.boardIndex)
@@ -124,8 +136,6 @@ class chessRoom {
 
     addMoveToPGN(move:string,indexBoard:0|1){
         let moveFormatted = ""
-        console.log(this.PGNGames)
-        console.log(indexBoard)
         if(move[0]==="w"){
             const turn = Math.floor(this.PGNGames[indexBoard].split(" ").length/2)+1
             moveFormatted+=turn+"."
@@ -135,9 +145,6 @@ class chessRoom {
         if(this.chessRoomInfo){
             updatePGNBoard(indexBoard==0 ? this.chessRoomInfo.firstBoardId : this.chessRoomInfo.secondBoardId,this.PGNGames[indexBoard])
         }
-        console.log("Room "+this.roomId+" PGN board "+indexBoard+" :")
-        console.log(this.PGNGames[indexBoard] );
-        console.log()
     }
 
     sendAllMessage(data:string){
@@ -175,10 +182,13 @@ class chessRoom {
     }
 
     isFree(){
-        return this.player2.pseudo === null || this.player1.pseudo === null 
+        return !this.onInvitationOnly && (this.player2.pseudo === null || this.player1.pseudo === null) 
     }
 
     isEmpty(){
+        console.log("is Room "+ this.roomId +" is empty ? ")
+        console.log("Player "+ this.player1.pseudo +" connected : "+this.player1.connected)
+        console.log("Player "+ this.player2.pseudo +" connected : "+this.player2.connected)
         return !this.player1.connected && !this.player2.connected
     }
 

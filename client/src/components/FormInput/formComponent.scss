@@ -23,9 +23,8 @@
 .textInputFieldContainer{
     display: flex;
     flex-direction: row;
-    background-color: constante.$primary-background;
     gap:5px;
-    border-radius: 2px;
+    border-radius: 5px;
     justify-content: space-between;
 }
 

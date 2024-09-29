@@ -15,38 +15,39 @@ class gameRoomWebSocketHandler {
             const room = req.url.split("/")[1]
             const pseudo = req.url.split("/")[2]
 
-            console.log(room)
             this.showAllRooms()
 
             // Recherche de la salle avec l'id correspondant dans la liste des salles
-            
-            const currentRoom = this.listRooms.find(l=>l.roomId===room)
-            console.log(room)
-            console.log(this.listRooms.map(l=>l.roomId))
-            // Si la salle n'est pas trouvé erreur puisque que la room est initialisé au moment de la requête
-            if(!currentRoom){
-                throw new Error("Room : "+currentRoom+" introuvable");
-            }
-            console.log("plaer",pseudo)
-            currentRoom.addWs(wsConnection,pseudo)
-
-            wsConnection.on("message",(data:string)=>{
-                if(! currentRoom) throw new Error("Chat introuvable "+ room);
-                currentRoom.receptionMessage(data)
-            })
-
-            wsConnection.on("close",(data:string)=>{
-                console.log("suppression "+pseudo)
-                currentRoom.disconnect(pseudo)
-                if(currentRoom.isEmpty()){
-                    this.deleteRoom(room)
+            try{
+                const currentRoom = this.listRooms.find(l=>l.roomId===room)
+                // Si la salle n'est pas trouvé erreur puisque que la room est initialisé au moment de la requête
+                if(!currentRoom){
+                    wsConnection.terminate()
+                    throw new Error("Room : "+room+" introuvable");
                 }
+                currentRoom.addWs(wsConnection,pseudo)
+    
+                wsConnection.on("message",(data:string)=>{
+                    if(! currentRoom) throw new Error("Chat introuvable "+ room);
+                    currentRoom.receptionMessage(data)
+                })
+    
+                wsConnection.on("close",(data:string)=>{
+                    currentRoom.disconnect(pseudo)
+    
+                    if(currentRoom.isEmpty()){
+                        this.deleteRoom(room)
+                    }
+                }
+                )
             }
-            )
+            catch(e){
+                console.log(e)
+            }
         })
     }
 
-    createRoom(){
+    createRoom(pseudo : string){
         let roomCode = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const charactersLength = characters.length;
@@ -56,14 +57,27 @@ class gameRoomWebSocketHandler {
             counter += 1;
         }
         console.log(roomCode);
-        
         let idRoom = roomCode
         const newRoom = new chessRoom(idRoom)
+        newRoom.addPlayer(pseudo)
+        this.listRooms.push(newRoom)
         return newRoom
     }
 
-    requestRoom(pseudo:string){
-        console.log("recherche de salle")
+    async createInviteRoom(pseudo : string,userInvited?:string){
+        const newRoom = this.createRoom(pseudo)
+        newRoom.setOnInviteRoom(true,userInvited)
+
+        return {
+            "pseudo" : pseudo,
+            "color":"w",
+            "roomId" : newRoom.getRoomId(),
+            "boardStates":newRoom.getBoardsStates().join('XXX') // we can then split result on frontend
+        }
+    }
+
+    async requestRoom(pseudo:string){
+        console.log("recherche de salle user : "+pseudo)
         // searching free room through current rooms
         for(var i = 0 ; i < this.listRooms.length ; i++){
             if(this.listRooms[i].isFree()){
@@ -77,9 +91,7 @@ class gameRoomWebSocketHandler {
             }
         }
         // create a new room
-        const newRoom = this.createRoom()
-        this.listRooms.push(newRoom)
-        newRoom.addPlayer(pseudo)
+        const newRoom = this.createRoom(pseudo)
         return {
             "pseudo" : pseudo,
             "color":"w",

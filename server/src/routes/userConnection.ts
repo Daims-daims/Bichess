@@ -19,7 +19,6 @@ interface responseAccount{
 router.post("/login",(req:Request,res:Response)=>{
     const {pseudo,password} = req.body 
 
-    console.log("login connexion : "+pseudo + "--"+password)
 
     const response:responseAccount={
       status:"guest"
@@ -40,7 +39,6 @@ router.post("/login",(req:Request,res:Response)=>{
             const sessionId = generateSession()
             
             user.update({tokenId:sessionId.tokenId,tokenValidity:sessionId.endDate}).then(()=>{
-              console.log("token created : "+sessionId.tokenId+"\nUntil : "+sessionId.endDate)
               res.cookie("session_token", sessionId.tokenId, { expires: sessionId.endDate })
               response.pseudo = pseudo 
               response.status = "authenticated"
@@ -54,9 +52,6 @@ router.post("/login",(req:Request,res:Response)=>{
 
 router.get("/me",(req:Request,res:Response)=>{
 
-  console.log("tentative /me ")
-  console.log(req.cookies)
-  console.log(req.cookies['session_token'])
   
   const response:responseAccount={
         status:"guest"
@@ -89,8 +84,6 @@ router.get("/me",(req:Request,res:Response)=>{
 })
 
 router.post("/signup",(req:Request,res:Response)=>{
-  console.log("pzdkfnzopifn")
-  console.log(req.body)
   const {pseudo,password} = req.body 
   User.findAll({
       where:{

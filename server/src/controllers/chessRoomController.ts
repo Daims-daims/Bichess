@@ -25,9 +25,6 @@ const createRoom = async function (roomId: string, whitePiecePseudo: string, bla
         where:
             { pseudo: blackPiecePseudo }
     })
-    console.log(whitePiece[0].getDataValue('id'))
-    console.log(blackPiece[0].getDataValue('id'))
-    console.log(roomId)
     const firstBoard = await chessBoard.create({
         PGN: '',
     })
@@ -42,7 +39,6 @@ const createRoom = async function (roomId: string, whitePiecePseudo: string, bla
         firstBoardId: firstBoard.getDataValue('id'),
         secondBoardId: secondBoard.getDataValue('id')
     })
-    console.log(chessRoom)
     return chessRoom.toJSON()
     return "chessRoom"
 }
@@ -60,8 +56,6 @@ const getRoom = async function (roomId: string) {
 }
 
 const updatePGNBoard = async function (roomId: string, board: 1 | 2, PGN: string) {
-    console.log(PGN)
-
 
 }
 

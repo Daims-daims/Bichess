@@ -30,3 +30,16 @@
     font-size: 20px;
     font-weight: 700;
 }
+
+.menuBoxContent{
+    width:100%;
+    font-weight: 500;
+    display: flex;
+    gap:5px;
+    flex-direction: column;
+    color: constante.$primary-color;
+    font-size: 18px;
+}
+.menuBoxContent b{
+    font-weight: 900;
+}

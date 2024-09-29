@@ -75,9 +75,6 @@ export async function getHistoryFriendFromId(userId:number,idFriend:number){
 
 
 function formatRoom(room:Model<any,any>):chessRoomHistoryInterface{
-    console.log(convertResultGame(room.getDataValue("firstBoard").getDataValue("result")))
-    console.log(convertResultGame(room.getDataValue("secondBoard").getDataValue("result")))
-    console.log(convertResultGame("black"))
     return{
         gameRoomId:room.getDataValue("roomId"),
         whitePieceId:room.getDataValue("whitePiecesId"),
