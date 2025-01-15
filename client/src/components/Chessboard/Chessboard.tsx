@@ -74,7 +74,7 @@ function Chessboard({onGameOver,onPieceMove,pieces,playerToPlay,invert,disableCh
                     const pieceMove = pieces.find((l=>l.x===selectedPieceCoord?.x&&l.y===selectedPieceCoord.y))
                     if(pieceMove && availableMove(pieceMove,{x,y},pieces)){
                         const tmpRes = specialMove(pieceMove,{x:x,y:y},pieces)
-                        onPieceMove(tmpRes ? tmpRes : moveToString(pieceMove,{x:x,y:y},pieces),true,playerToPlay)
+                        onPieceMove(tmpRes ? playerToPlay+tmpRes : moveToString(pieceMove,{x:x,y:y},pieces),true,playerToPlay)
                     }
                 }           
                 if(! playerStillHasMove(playerToPlay,pieces)) onGameOver(playerToPlay)

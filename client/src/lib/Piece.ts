@@ -134,23 +134,23 @@ function specialMove(pieceMove:IPiece,{x,y}:coordinate,piecesBoard:IPiece[]):str
     if(pieceMove.pieceType.toLowerCase()=="k"){
         if(Math.abs(pieceMove.x-x)===2){
             if(x<pieceMove.x){
-                piecesBoard = piecesBoard.map((p)=>{
-                    if(p.y === pieceMove.y && p.x === 0){
-                        p.x= pieceMove.x-1
-                        p.hasAlreadyMoved=true
-                    }
-                    return p
-                })
+                // piecesBoard = piecesBoard.map((p)=>{
+                //     if(p.y === pieceMove.y && p.x === 0){
+                //         p.x= pieceMove.x-1
+                //         p.hasAlreadyMoved=true
+                //     }
+                //     return p
+                // })
                 return "O-O-O"
             }
             if(x>pieceMove.x){
-                piecesBoard = piecesBoard.map((p)=>{
-                    if(p.y === pieceMove.y && p.x === 7){
-                        p.x= pieceMove.x+1
-                        p.hasAlreadyMoved=true
-                    }
-                    return p
-                })
+                // piecesBoard = piecesBoard.map((p)=>{
+                //     if(p.y === pieceMove.y && p.x === 7){
+                //         p.x= pieceMove.x+1
+                //         p.hasAlreadyMoved=true
+                //     }
+                //     return p
+                // })
                 return "O-O"
             }
         }

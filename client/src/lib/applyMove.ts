@@ -8,7 +8,7 @@ import { IPiece } from "./Type"
 function applyMove(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiece[]{
     console.log("applyMove "+ move)
     if(move[0]==="O") return applyCastle(move,playerToPlay,pieces)
-    if(move[0].toUpperCase()===move[0]) return applyMovePiece(move,playerToPlay,pieces)
+    else if(move[0].toUpperCase()===move[0]) return applyMovePiece(move,playerToPlay,pieces)
     else return applyMovePawn(move,playerToPlay,pieces)
 }
 
@@ -34,6 +34,7 @@ function applyCastle(move:string,playerToPlay:"w" | "b",pieces:IPiece[]):IPiece[
     }
     else{
         rook = pieces.find(p=>(playerToPlay==="w" ? p.pieceType==="R" : p.pieceType==="r") && p.x===7)
+        console.log(king,rook,playerToPlay)
         if(! rook) throw new Error("Rook not found to short castle");
         return pieces.map(p=>{
             if (p==rook){

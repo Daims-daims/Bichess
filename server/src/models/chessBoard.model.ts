@@ -7,6 +7,4 @@ const chessBoard = databaseConnection.define("chessBoard", {
     result : DataTypes.ENUM('white', 'black', 'draw')
 });
 
-
-
 export default chessBoard
