@@ -19,7 +19,7 @@ const LeftBarMenu = ({onClic,text,isActive,link,Icon}:Props)=>{
     const colorElement = isHovered?color.primary_background : isActive ? color.primary_bold : "#000000"
 
 
-    return <Link style={{ textDecoration: 'none' }} to={link}><div onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} onClick={()=>onClic()} className={isActive ? "LeftBarMenu MenuActive" : "LeftBarMenu"}>
+    return <Link style={{ textDecoration: 'none' }} to={link}><div onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} onClick={()=>onClic()}  className={isActive ? "LeftBarMenu MenuActive" : "LeftBarMenu"}>
         <div >
         <Icon  className='iconMenu'color={colorElement}   />
         </div>

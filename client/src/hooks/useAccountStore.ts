@@ -8,7 +8,10 @@ export const useAccountStore = create(
       account: undefined as undefined | null | Account,
     },
     (set) => ({
-      setAccount: (account: Account | null) => set({ account }),
+      setAccount: (account: Account | null) => {
+        console.log("account")
+        console.log(account)
+        return set({ account })},
     })
   )
 );

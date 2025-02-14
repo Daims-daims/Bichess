@@ -24,7 +24,7 @@ const LeftBar = ({logOut,pseudo}:Props)=>{
 
     return <div onMouseEnter={()=>setExpanded(true)} onMouseLeave={()=>setExpanded(false)} className={expanded ? "LeftBar LeftBarExpanded" : "LeftBar" }>
         <div style={{display:"flex",flexDirection:"column",gap:"45px"}}>
-            <LeftBarMenu Icon={FaUser} link={"/profile"} onClic={()=>onClickAction("Profil")} text={"Mon Profil "+pseudo} isActive={selectedRoom ==="profile"}  />
+            <LeftBarMenu Icon={FaUser} link={"/profile"} onClic={()=>onClickAction("Profil")} text={"Mon Profil" } isActive={selectedRoom ==="profile"}  />
             <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
                 <LeftBarMenu Icon={FaHome} link={"/"} onClic={()=>onClickAction("Profil")} text="Accueil" isActive={selectedRoom ===""}  />
                 <LeftBarMenu Icon={FaChessQueen} link={"/game"} onClic={()=>onClickAction("Profil")} text="Jouer" isActive={selectedRoom ==="game"}  />
